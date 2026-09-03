@@ -1,0 +1,134 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://scenes/furnace/Furnace.cs" id="1_furnace"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iron"]
+albedo_color = Color(0.22, 0.22, 0.25, 1)
+metallic = 0.6
+roughness = 0.55
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iron_light"]
+albedo_color = Color(0.38, 0.38, 0.42, 1)
+metallic = 0.7
+roughness = 0.45
+
+[sub_resource type="BoxMesh" id="BoxMesh_body"]
+material = SubResource("StandardMaterial3D_iron")
+size = Vector3(2.2, 1.9, 1.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_top"]
+material = SubResource("StandardMaterial3D_iron_light")
+size = Vector3(2.4, 0.12, 1.6)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_chimney"]
+material = SubResource("StandardMaterial3D_iron_light")
+top_radius = 0.22
+bottom_radius = 0.26
+height = 1.6
+
+[sub_resource type="BoxMesh" id="BoxMesh_glow"]
+size = Vector3(1.3, 0.9, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_frame"]
+material = SubResource("StandardMaterial3D_iron_light")
+size = Vector3(1.5, 1.1, 0.08)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_area"]
+size = Vector3(2.5, 2.2, 1.9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_blocker"]
+size = Vector3(2.4, 2.0, 1.6)
+
+[sub_resource type="Gradient" id="Gradient_fire"]
+offsets = PackedFloat32Array(0, 0.4, 1)
+colors = PackedColorArray(1, 0.92, 0.4, 1, 1, 0.4, 0.08, 0.85, 0.25, 0.04, 0.02, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_particle"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+billboard_mode = 3
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_particle"]
+material = SubResource("StandardMaterial3D_particle")
+size = Vector2(0.25, 0.25)
+
+[node name="Furnace" type="Area3D" groups=["interactables"]]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_furnace")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+mesh = SubResource("BoxMesh_body")
+
+[node name="Top" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.95, 0)
+mesh = SubResource("BoxMesh_top")
+
+[node name="Chimney" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 2.75, -0.3)
+mesh = SubResource("CylinderMesh_chimney")
+
+[node name="Frame" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0.7)
+mesh = SubResource("BoxMesh_frame")
+
+[node name="Glow" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0.72)
+mesh = SubResource("BoxMesh_glow")
+
+[node name="FireLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 1.1)
+light_color = Color(1, 0.6, 0.25, 1)
+light_energy = 0.2
+omni_range = 9.0
+
+[node name="Fire" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0.8)
+emitting = false
+amount = 48
+lifetime = 0.9
+mesh = SubResource("QuadMesh_particle")
+emission_shape = 3
+emission_box_extents = Vector3(0.5, 0.05, 0.08)
+direction = Vector3(0, 1, 0)
+spread = 12.0
+gravity = Vector3(0, 2.5, 0)
+initial_velocity_min = 0.8
+initial_velocity_max = 1.6
+scale_amount_min = 0.5
+scale_amount_max = 1.0
+color_ramp = SubResource("Gradient_fire")
+
+[node name="Embers" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0.9)
+emitting = false
+amount = 30
+lifetime = 0.8
+one_shot = true
+explosiveness = 1.0
+mesh = SubResource("QuadMesh_particle")
+direction = Vector3(0, 1, 1)
+spread = 50.0
+gravity = Vector3(0, -6, 0)
+initial_velocity_min = 2.5
+initial_velocity_max = 5.0
+scale_amount_min = 0.2
+scale_amount_max = 0.45
+color = Color(1, 0.7, 0.2, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0.1)
+shape = SubResource("BoxShape3D_area")
+
+[node name="Blocker" type="StaticBody3D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+shape = SubResource("BoxShape3D_blocker")

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BookData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/BookData.cs" id="1_book_data"]
+
+[resource]
+script = ExtResource("1_book_data")
+Title = "Collected Poems"
+BurnValue = 8
+Heat = 8.0
+CoverColor = Color(0.55, 0.2, 0.3, 1)

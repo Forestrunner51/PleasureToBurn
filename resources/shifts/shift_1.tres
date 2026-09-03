@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ShiftConfig" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://resources/ShiftConfig.cs" id="1_shift_config"]
+[ext_resource type="Script" path="res://resources/BookData.cs" id="2_book_data"]
+[ext_resource type="Resource" path="res://resources/books/poems.tres" id="3_poems"]
+[ext_resource type="Resource" path="res://resources/books/almanac.tres" id="4_almanac"]
+[ext_resource type="Resource" path="res://resources/books/cookbook.tres" id="5_cookbook"]
+
+[resource]
+script = ExtResource("1_shift_config")
+ShiftName = "Orientation"
+Quota = 8
+DurationSeconds = 75.0
+RestockSeconds = 3.0
+BookPool = Array[ExtResource("2_book_data")]([ExtResource("3_poems"), ExtResource("4_almanac"), ExtResource("5_cookbook")])

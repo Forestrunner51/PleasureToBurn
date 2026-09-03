@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BookData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/BookData.cs" id="1_book_data"]
+
+[resource]
+script = ExtResource("1_book_data")
+Title = "A Treatise on Clocks"
+BurnValue = 15
+Heat = 18.0
+CoverColor = Color(0.25, 0.45, 0.3, 1)
