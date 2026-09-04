@@ -1,0 +1,104 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://systems/fire/Flammable.cs" id="1_flammable"]
+[ext_resource type="Resource" path="res://resources/burn_profiles/wood.tres" id="2_wood"]
+[ext_resource type="PackedScene" path="res://scenes/props/book.tscn" id="3_book"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wood"]
+albedo_color = Color(0.42, 0.28, 0.17, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_back"]
+material = SubResource("StandardMaterial3D_wood")
+size = Vector3(1.2, 2.0, 0.06)
+
+[sub_resource type="BoxMesh" id="BoxMesh_plank"]
+material = SubResource("StandardMaterial3D_wood")
+size = Vector3(1.2, 0.04, 0.32)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_shelf"]
+size = Vector3(1.2, 2.0, 0.34)
+
+[node name="Bookshelf" type="StaticBody3D"]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.14)
+mesh = SubResource("BoxMesh_back")
+
+[node name="Plank1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("BoxMesh_plank")
+
+[node name="Plank2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("BoxMesh_plank")
+
+[node name="Plank3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+mesh = SubResource("BoxMesh_plank")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_shelf")
+
+[node name="Flammable" type="Node" parent="."]
+script = ExtResource("1_flammable")
+Profile = ExtResource("2_wood")
+
+[node name="Books" type="Node3D" parent="."]
+
+[node name="Book_0_0" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 0.44, 0.02)
+
+[node name="Book_0_1" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.27, 0.44, 0.02)
+
+[node name="Book_0_2" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09, 0.44, 0.02)
+
+[node name="Book_0_3" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09, 0.44, 0.02)
+
+[node name="Book_0_4" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27, 0.44, 0.02)
+
+[node name="Book_0_5" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0.44, 0.02)
+
+[node name="Book_1_0" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 1.04, 0.02)
+
+[node name="Book_1_1" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.27, 1.04, 0.02)
+
+[node name="Book_1_2" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09, 1.04, 0.02)
+
+[node name="Book_1_3" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09, 1.04, 0.02)
+
+[node name="Book_1_4" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27, 1.04, 0.02)
+
+[node name="Book_1_5" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 1.04, 0.02)
+
+[node name="Book_2_0" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 1.64, 0.02)
+
+[node name="Book_2_1" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.27, 1.64, 0.02)
+
+[node name="Book_2_2" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09, 1.64, 0.02)
+
+[node name="Book_2_3" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09, 1.64, 0.02)
+
+[node name="Book_2_4" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.27, 1.64, 0.02)
+
+[node name="Book_2_5" parent="Books" instance=ExtResource("3_book")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 1.64, 0.02)

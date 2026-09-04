@@ -1,10 +1,28 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scenes/player/Player.cs" id="1_player"]
+[ext_resource type="Script" path="res://scenes/player/Flamethrower.cs" id="2_flamethrower"]
+[ext_resource type="Resource" path="res://resources/flamethrower/standard_issue.tres" id="3_stats"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.4
 height = 1.8
+
+[sub_resource type="Gradient" id="Gradient_jet"]
+offsets = PackedFloat32Array(0, 0.35, 1)
+colors = PackedColorArray(1, 0.95, 0.5, 1, 1, 0.45, 0.08, 0.8, 0.3, 0.05, 0.02, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jet"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+billboard_mode = 3
+billboard_keep_scale = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_jet"]
+material = SubResource("StandardMaterial3D_jet")
+size = Vector2(0.3, 0.3)
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 1
@@ -22,11 +40,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
 fov = 80.0
 near = 0.05
 
-[node name="InteractRay" type="RayCast3D" parent="Head/Camera3D"]
-target_position = Vector3(0, 0, -2.6)
-collision_mask = 4
-collide_with_areas = true
-collide_with_bodies = false
+[node name="Flamethrower" type="Node3D" parent="Head/Camera3D"]
+script = ExtResource("2_flamethrower")
+Stats = ExtResource("3_stats")
 
-[node name="Hands" type="Node3D" parent="Head/Camera3D"]
-transform = Transform3D(0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, 0.984808, 0.38, -0.32, -0.75)
+[node name="Nozzle" type="Marker3D" parent="Head/Camera3D/Flamethrower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, -0.3, -0.7)
+
+[node name="FlameJet" type="CPUParticles3D" parent="Head/Camera3D/Flamethrower"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, -0.3, -0.7)
+emitting = false
+amount = 120
+lifetime = 0.45
+mesh = SubResource("QuadMesh_jet")
+direction = Vector3(-0.06, 0.05, -1)
+spread = 6.0
+gravity = Vector3(0, 1.5, 0)
+initial_velocity_min = 11.0
+initial_velocity_max = 14.0
+scale_amount_min = 0.4
+scale_amount_max = 1.6
+color_ramp = SubResource("Gradient_jet")

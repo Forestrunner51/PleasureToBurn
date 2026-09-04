@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="BurnProfile" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://systems/fire/BurnProfile.cs" id="1_profile"]
+
+[resource]
+script = ExtResource("1_profile")
+Fuel = 6.0
+IgnitionTemperature = 60.0
+HeatOutput = 70.0
+SpreadRadius = 0.6
+CoolingRate = 30.0

@@ -2,21 +2,25 @@ using Godot;
 
 namespace PleasureToBurn;
 
-/// <summary>Owns the paused state and mouse mode while open. The Game scene decides what the buttons do.</summary>
+/// <summary>Owns pause state and mouse capture while open. Restart reloads the current scene.</summary>
 public partial class PauseMenu : CanvasLayer
 {
-    [Signal] public delegate void ResumeRequestedEventHandler();
-    [Signal] public delegate void RestartRequestedEventHandler();
-    [Signal] public delegate void MenuRequestedEventHandler();
-
     private Button _resumeButton = null!;
 
     public override void _Ready()
     {
         _resumeButton = GetNode<Button>("Panel/VBox/ResumeButton");
         _resumeButton.Pressed += Close;
-        GetNode<Button>("Panel/VBox/RestartButton").Pressed += () => EmitSignal(SignalName.RestartRequested);
-        GetNode<Button>("Panel/VBox/MenuButton").Pressed += () => EmitSignal(SignalName.MenuRequested);
+        GetNode<Button>("Panel/VBox/RestartButton").Pressed += Restart;
+        GetNode<Button>("Panel/VBox/QuitButton").Pressed += () => GetTree().Quit();
+    }
+
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if (!@event.IsActionPressed("pause"))
+            return;
+        if (Visible) Close(); else Open();
+        GetViewport().SetInputAsHandled();
     }
 
     public void Open()
@@ -32,15 +36,12 @@ public partial class PauseMenu : CanvasLayer
         Visible = false;
         GetTree().Paused = false;
         Input.MouseMode = Input.MouseModeEnum.Captured;
-        EmitSignal(SignalName.ResumeRequested);
     }
 
-    public override void _UnhandledInput(InputEvent @event)
+    private void Restart()
     {
-        if (Visible && @event.IsActionPressed("pause"))
-        {
-            Close();
-            GetViewport().SetInputAsHandled();
-        }
+        GetTree().Paused = false;
+        FireSystem.Instance?.Reset();
+        GetTree().ReloadCurrentScene();
     }
 }

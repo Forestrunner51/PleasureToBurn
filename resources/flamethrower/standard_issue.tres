@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="FlamethrowerStats" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/flamethrower/FlamethrowerStats.cs" id="1_stats"]
+
+[resource]
+script = ExtResource("1_stats")
+DisplayName = "Standard Issue"
+Range = 6.0
+SpreadDegrees = 7.0
+HeatPerSecond = 240.0
+FuelCapacity = 100.0
+FuelPerSecond = 6.0
+RayCount = 6
