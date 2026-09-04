@@ -29,6 +29,15 @@ public partial class FireSystem : Node
     /// <summary>Spatial hash cell size. Should be at least the largest SpreadRadius in use.</summary>
     [Export(PropertyHint.Range, "0.5,10,0.5,suffix:m")] public float CellSize { get; set; } = 2f;
 
+    /// <summary>
+    /// Fire rises: a neighbour directly above a source at the edge of its radius gets (1 + UpwardBias) times
+    /// the heat of one beside it. TUNE BY EYE with a bookshelf: it should catch bottom to top.
+    /// </summary>
+    [Export(PropertyHint.Range, "0,3,0.1")] public float UpwardBias { get; set; } = 1.2f;
+
+    /// <summary>How much less heat reaches neighbours below the source (0 = no penalty, 1 = nothing spreads down).</summary>
+    [Export(PropertyHint.Range, "0,1,0.05")] public float DownwardPenalty { get; set; } = 0.6f;
+
     public int BurningCount => _burning.Count;
     public int CharredCount { get; private set; }
     public IReadOnlyCollection<Flammable> All => _all;
@@ -164,10 +173,19 @@ public partial class FireSystem : Node
                 var distSq = origin.DistanceSquaredTo(other.GlobalPosition);
                 if (distSq > radiusSq)
                     continue;
-                var weight = 1f - Mathf.Sqrt(distSq) / radius; // linear falloff, 1 at centre, 0 at edge
-                source.Neighbours.Add((other, weight));
+                var falloff = 1f - Mathf.Sqrt(distSq) / radius; // linear, 1 at centre, 0 at edge
+                var weight = falloff * VerticalFactor(other.GlobalPosition.Y - origin.Y, radius);
+                if (weight > 0f)
+                    source.Neighbours.Add((other, weight));
             }
         }
+    }
+
+    /// <summary>Multiplier for heat travelling up (dy > 0) or down (dy < 0), normalised by the spread radius.</summary>
+    public float VerticalFactor(float dy, float radius)
+    {
+        var t = Mathf.Clamp(dy / radius, -1f, 1f);
+        return t >= 0f ? 1f + UpwardBias * t : 1f + DownwardPenalty * t;
     }
 
     private Vector3I CellCoord(Vector3 position) => new(

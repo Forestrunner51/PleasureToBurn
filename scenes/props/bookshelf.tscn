@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://systems/fire/Flammable.cs" id="1_flammable"]
 [ext_resource type="Resource" path="res://resources/burn_profiles/wood.tres" id="2_wood"]
@@ -12,38 +12,75 @@ roughness = 0.9
 material = SubResource("StandardMaterial3D_wood")
 size = Vector3(1.2, 2.0, 0.06)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_back"]
+size = Vector3(1.2, 2.0, 0.06)
+
 [sub_resource type="BoxMesh" id="BoxMesh_plank"]
 material = SubResource("StandardMaterial3D_wood")
 size = Vector3(1.2, 0.04, 0.32)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_shelf"]
-size = Vector3(1.2, 2.0, 0.34)
+[sub_resource type="BoxShape3D" id="BoxShape3D_plank"]
+size = Vector3(1.2, 0.04, 0.32)
 
-[node name="Bookshelf" type="StaticBody3D"]
+[node name="Bookshelf" type="Node3D"]
+
+[node name="Back" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.14)
 collision_layer = 4
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.14)
+[node name="Mesh" type="MeshInstance3D" parent="Back"]
 mesh = SubResource("BoxMesh_back")
 
-[node name="Plank1" type="MeshInstance3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Back"]
+shape = SubResource("BoxShape3D_back")
+
+[node name="Flammable" type="Node" parent="Back"]
+script = ExtResource("1_flammable")
+Profile = ExtResource("2_wood")
+
+[node name="Plank1" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+collision_layer = 4
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Plank1"]
 mesh = SubResource("BoxMesh_plank")
 
-[node name="Plank2" type="MeshInstance3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plank1"]
+shape = SubResource("BoxShape3D_plank")
+
+[node name="Flammable" type="Node" parent="Plank1"]
+script = ExtResource("1_flammable")
+Profile = ExtResource("2_wood")
+
+[node name="Plank2" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+collision_layer = 4
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Plank2"]
 mesh = SubResource("BoxMesh_plank")
 
-[node name="Plank3" type="MeshInstance3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plank2"]
+shape = SubResource("BoxShape3D_plank")
+
+[node name="Flammable" type="Node" parent="Plank2"]
+script = ExtResource("1_flammable")
+Profile = ExtResource("2_wood")
+
+[node name="Plank3" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+collision_layer = 4
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="Plank3"]
 mesh = SubResource("BoxMesh_plank")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("BoxShape3D_shelf")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plank3"]
+shape = SubResource("BoxShape3D_plank")
 
-[node name="Flammable" type="Node" parent="."]
+[node name="Flammable" type="Node" parent="Plank3"]
 script = ExtResource("1_flammable")
 Profile = ExtResource("2_wood")
 

@@ -4,7 +4,8 @@ namespace PleasureToBurn;
 
 /// <summary>
 /// First-person controller: mouse look, WASD movement with acceleration, gravity.
-/// Everything the player *does* (flamethrower, later: interact, carry) lives in child nodes.
+/// Everything the player *does* (flamethrower, interact) lives in child nodes; interact uses the
+/// flamethrower's centre ray so there is exactly one notion of "what am I looking at".
 ///
 /// Scene setup (by hand):
 ///   Player (CharacterBody3D, layer 1, mask 2)
@@ -19,17 +20,22 @@ public partial class Player : CharacterBody3D
     [Export] public float Friction { get; set; } = 50f;
     [Export] public float MouseSensitivity { get; set; } = 0.0022f;
 
+    /// <summary>Metres within which IInteractables respond to the interact action.</summary>
+    public const float InteractRange = 2.5f;
+
     private const float MaxPitch = 1.45f; // ~83 degrees
 
     private Node3D _head = null!;
     private float _gravity;
 
     public Camera3D Camera { get; private set; } = null!;
+    public Flamethrower Flamethrower { get; private set; } = null!;
 
     public override void _Ready()
     {
         _head = GetNode<Node3D>("Head");
         Camera = GetNode<Camera3D>("Head/Camera3D");
+        Flamethrower = GetNode<Flamethrower>("Head/Camera3D/Flamethrower");
         _gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity", 9.8);
         Input.MouseMode = Input.MouseModeEnum.Captured;
     }
@@ -60,6 +66,14 @@ public partial class Player : CharacterBody3D
             RotateY(-motion.Relative.X * MouseSensitivity);
             var pitch = _head.Rotation.X - motion.Relative.Y * MouseSensitivity;
             _head.Rotation = new Vector3(Mathf.Clamp(pitch, -MaxPitch, MaxPitch), 0, 0);
+        }
+        else if (@event.IsActionPressed("interact"))
+        {
+            if (Flamethrower.AimCollider is IInteractable target && Flamethrower.AimDistance <= InteractRange)
+            {
+                target.Interact(this);
+                GetViewport().SetInputAsHandled();
+            }
         }
     }
 }

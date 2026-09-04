@@ -24,8 +24,11 @@ public partial class FireTests : Node3D
         Check(_paper.Fuel > 0, "paper burn profile loads");
 
         await SpreadTests(fire!);
+        await UpwardBiasTest(fire!);
         await CoolingTest(fire!);
         await FlamethrowerTests(fire!);
+        await FuelCanTest(fire!);
+        await BookshelfTest(fire!);
         await TestRoomTest(fire!);
 
         GD.Print(_failures == 0 ? "FIRE TESTS PASSED" : $"FIRE TESTS FAILED: {_failures} check(s)");
@@ -63,6 +66,23 @@ public partial class FireTests : Node3D
 
         foreach (var f in chain) f.Body.QueueFree();
         far.Body.QueueFree();
+        await NextFrame();
+    }
+
+    // Fire rises: the neighbour above gets more heat than the one below at equal distance.
+    private async Task UpwardBiasTest(FireSystem fire)
+    {
+        fire.Reset();
+        var source = MakeProp(Vector3.Zero, _paper);
+        var above = MakeProp(new Vector3(0, 0.3f, 0), _paper);
+        var below = MakeProp(new Vector3(0, -0.3f, 0), _paper);
+        var beside = MakeProp(new Vector3(0.3f, 0, 0), _paper);
+        await NextFrame();
+        source.Ignite();
+        float W(Flammable f) => source.Neighbours.First(n => n.Target == f).Weight;
+        Check(W(above) > W(beside) && W(beside) > W(below), $"weights above > beside > below ({W(above):0.00} > {W(beside):0.00} > {W(below):0.00})");
+        Check(Mathf.IsEqualApprox(fire.VerticalFactor(0f, 1f), 1f), "no vertical offset means no bias");
+        foreach (var f in new[] { source, above, below, beside }) f.Body.QueueFree();
         await NextFrame();
     }
 
@@ -121,6 +141,59 @@ public partial class FireTests : Node3D
         await NextFrame();
     }
 
+    // A fuel can refills once, then is empty; interaction goes through the aim ray.
+    private async Task FuelCanTest(FireSystem fire)
+    {
+        fire.Reset();
+        var floor = new StaticBody3D { CollisionLayer = 2, CollisionMask = 0, Position = new Vector3(0, -0.5f, 0) };
+        floor.AddChild(new CollisionShape3D { Shape = new BoxShape3D { Size = new Vector3(20, 1, 20) } });
+        AddChild(floor);
+        var player = GD.Load<PackedScene>("res://scenes/player/player.tscn").Instantiate<Player>();
+        AddChild(player);
+        var can = GD.Load<PackedScene>("res://scenes/props/fuel_can.tscn").Instantiate<FuelCan>();
+        can.Position = new Vector3(0, 1.35f, -1.5f); // can body centred at eye height, in front
+        AddChild(can);
+        await NextFrame();
+        await NextFrame();
+
+        var thrower = player.Flamethrower;
+        thrower.UpdateAim();
+        Check(thrower.AimCollider == can, "aim ray finds the fuel can");
+        Check(thrower.AimDistance <= Player.InteractRange, $"fuel can is within interact range ({thrower.AimDistance:0.00} m)");
+        Check(!can.IsEmpty && can.Prompt.Contains("Refill"), "full can offers a refill prompt");
+
+        can.Interact(player);
+        Check(!can.IsEmpty, "interacting with a full tank does not spend a charge");
+        thrower.Fire(5f);
+        Check(thrower.Fuel < thrower.Stats.FuelCapacity, "firing drains the tank");
+        can.Interact(player);
+        Check(thrower.IsFull, "fuel can refills the tank");
+        Check(can.IsEmpty, "fuel can is empty after one use");
+        thrower.Fire(5f);
+        can.Interact(player);
+        Check(!thrower.IsFull, "empty can does nothing");
+
+        player.QueueFree();
+        can.QueueFree();
+        floor.QueueFree();
+        await NextFrame();
+    }
+
+    // The bookshelf is segmented so fire crawls across it instead of igniting as one lump.
+    private async Task BookshelfTest(FireSystem fire)
+    {
+        fire.Reset();
+        var shelf = GD.Load<PackedScene>("res://scenes/props/bookshelf.tscn").Instantiate<Node3D>();
+        AddChild(shelf);
+        await NextFrame();
+        var wood = fire.All.Count(f => !f.IsContraband);
+        var books = fire.All.Count(f => f.IsContraband);
+        Check(wood == 4, $"bookshelf has 4 wooden segments (back + 3 planks), got {wood}");
+        Check(books == 18, $"bookshelf holds 18 books, got {books}");
+        shelf.QueueFree();
+        await NextFrame();
+    }
+
     // The real prototype room loads and counts its contraband.
     private async Task TestRoomTest(FireSystem fire)
     {
@@ -133,10 +206,16 @@ public partial class FireTests : Node3D
         Check(fire.All.Count > room.ContrabandTotal, "furniture registers as flammable too");
         Check(room.GetNodeOrNull<Player>("Player") is not null, "room contains the player");
 
+        var vfx = room.GetNode<FireVfx>("FireVfx");
         var book = room.GetNode<Flammable>("Props/HiddenBookUnderTable/Flammable");
         book.Ignite();
+        await NextFrame();
+        Check(vfx.ActiveFlames == 1, "ignition attaches a flame effect");
+        Check(vfx.GetChildCount() >= 1, "ignition spawns a burst");
         await Wait(_paper.Fuel + 1f);
         Check(room.ContrabandBurned >= 1, "burning a hidden book counts toward the objective");
+        Check(vfx.ActiveFlames == 0, "charring removes the flame effect");
+        Check(room.GetNodeOrNull("Props/FuelCanByDoor") is FuelCan, "room has fuel cans");
 
         room.QueueFree();
         await NextFrame();

@@ -45,6 +45,14 @@ public partial class Flammable : Node
     /// <summary>0..1 how fiercely this is burning: quick ramp up, then fades as fuel runs out.</summary>
     public float Intensity { get; private set; }
 
+    /// <summary>0..1 progress toward ignition while unburnt; 1 while burning; 0 once charred. Drives the reticle.</summary>
+    public float HeatFraction => State switch
+    {
+        BurnState.Unburnt => Mathf.Clamp(Heat / Profile.IgnitionTemperature, 0f, 1f),
+        BurnState.Burning => 1f,
+        _ => 0f,
+    };
+
     public Node3D Body { get; private set; } = null!;
     public Vector3 GlobalPosition => Body.GlobalPosition;
 

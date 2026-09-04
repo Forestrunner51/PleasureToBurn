@@ -17,7 +17,8 @@ comes next.
 1. Open Godot, **Import**, pick `project.godot`.
 2. Press **Build**, then **Play**. The startup scene is the test room.
 
-Controls: mouse to look, **WASD** to move, **hold left mouse** to flame, **R** to refill, **Esc** to pause.
+Controls: mouse to look, **WASD** to move, **hold left mouse** to flame, **E** to use fuel cans, **Esc** to pause.
+The reticle ring fills as the object you aim at heats toward ignition.
 
 ## Tests
 
@@ -25,5 +26,6 @@ Controls: mouse to look, **WASD** to move, **hold left mouse** to flame, **R** t
 ./tests/run_tests.sh
 ```
 
-Builds the assembly and runs `tests/fire_tests.tscn` headless: spread along a row, out-of-range isolation,
-charring, cooling, flamethrower fuel/heat/shielding/range, and the test room's contraband count.
+Builds the assembly and runs `tests/fire_tests.tscn` headless: spread along a row, upward bias, out-of-range
+isolation, charring, cooling, flamethrower fuel/heat/shielding/range, fuel cans, bookshelf segmentation, and the
+test room's contraband count and effects.

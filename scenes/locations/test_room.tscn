@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://scenes/locations/Location.cs" id="1_location"]
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" path="res://scenes/props/book.tscn" id="8_book"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="9_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu/pause_menu.tscn" id="10_pause"]
+[ext_resource type="PackedScene" path="res://scenes/props/fuel_can.tscn" id="11_fuel_can"]
+[ext_resource type="Script" path="res://systems/fire/FireVfx.cs" id="12_fire_vfx"]
 
 [sub_resource type="Environment" id="Environment_room"]
 background_mode = 1
@@ -127,6 +129,15 @@ transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2.2, 0.12, -2.4)
 
 [node name="HiddenBookBehindCrate" parent="Props" instance=ExtResource("8_book")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3, 0.12, 3.9)
+
+[node name="FuelCanByDoor" parent="Props" instance=ExtResource("11_fuel_can")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, 0, 3.8)
+
+[node name="FuelCanByTable" parent="Props" instance=ExtResource("11_fuel_can")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4, 0, -3.6)
+
+[node name="FireVfx" type="Node3D" parent="."]
+script = ExtResource("12_fire_vfx")
 
 [node name="Player" parent="." instance=ExtResource("2_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.1, 2.5)
