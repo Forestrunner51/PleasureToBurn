@@ -380,9 +380,11 @@ shape = SubResource("BoxShape3D_car_{name}")
 start = w.index('[node name="Blocks" type="Node3D" parent="."]')
 end = w.index('[node name="Depot" type="Node3D" parent="."]')
 w = w[:start] + nodes.lstrip("\n") + "\n" + w[end:]
-# remove old block sub_resources
+# remove old block sub_resources and anything this script generated on a previous run (keeps it idempotent)
 import re
 w = re.sub(r'\n\[sub_resource type="(BoxMesh|BoxShape3D)" id="(BoxMesh|BoxShape3D)_block_\d+"\]\n(?:[^\n\[]+\n)+', '\n', w)
+w = re.sub(r'\[ext_resource type="PackedScene" path="res://assets/models/(city|cars)/[^"]+" id="(city_|car_)[^"]+"\]\n', '', w)
+w = re.sub(r'\[sub_resource type="BoxShape3D" id="BoxShape3D_(city_\w+|trunk|car_\w+)"\]\nsize = [^\n]+\n\n?', '', w)
 # insert new ext/sub resources
 first_sub = w.index('[sub_resource')
 w = w[:first_sub] + "\n".join(ext_add) + "\n\n" + "\n\n".join(sub_add) + "\n\n" + w[first_sub:]

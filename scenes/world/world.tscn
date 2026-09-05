@@ -1,4 +1,4 @@
-[gd_scene load_steps=143 format=3]
+[gd_scene load_steps=89 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/vehicles/truck.tscn" id="2_truck"]
@@ -39,113 +39,6 @@
 [ext_resource type="PackedScene" path="res://assets/models/cars/suv.glb" id="car_suv"]
 [ext_resource type="PackedScene" path="res://assets/models/cars/police.glb" id="car_police"]
 [ext_resource type="PackedScene" path="res://assets/models/cars/wheel-default.glb" id="car_wheel"]
-
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-a.glb" id="city_a"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-b.glb" id="city_b"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-c.glb" id="city_c"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-d.glb" id="city_d"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-e.glb" id="city_e"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-f.glb" id="city_f"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-g.glb" id="city_g"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-h.glb" id="city_h"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-i.glb" id="city_i"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-j.glb" id="city_j"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-k.glb" id="city_k"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-l.glb" id="city_l"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-m.glb" id="city_m"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-n.glb" id="city_n"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-o.glb" id="city_o"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-p.glb" id="city_p"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-q.glb" id="city_q"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-r.glb" id="city_r"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-s.glb" id="city_s"]
-[ext_resource type="PackedScene" path="res://assets/models/city/building-type-t.glb" id="city_t"]
-[ext_resource type="PackedScene" path="res://assets/models/city/tree-large.glb" id="city_tree_large"]
-[ext_resource type="PackedScene" path="res://assets/models/city/tree-small.glb" id="city_tree_small"]
-[ext_resource type="PackedScene" path="res://assets/models/cars/sedan.glb" id="car_sedan"]
-[ext_resource type="PackedScene" path="res://assets/models/cars/van.glb" id="car_van"]
-[ext_resource type="PackedScene" path="res://assets/models/cars/taxi.glb" id="car_taxi"]
-[ext_resource type="PackedScene" path="res://assets/models/cars/suv.glb" id="car_suv"]
-[ext_resource type="PackedScene" path="res://assets/models/cars/police.glb" id="car_police"]
-[ext_resource type="PackedScene" path="res://assets/models/cars/wheel-default.glb" id="car_wheel"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_a"]
-size = Vector3(9.75, 6.25, 7.71)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_b"]
-size = Vector3(13.71, 8.53, 8.55)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_c"]
-size = Vector3(9.65, 7.75, 7.71)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_d"]
-size = Vector3(13.17, 9.28, 7.71)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_e"]
-size = Vector3(9.75, 8.53, 7.71)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_f"]
-size = Vector3(10.71, 8.53, 10.54)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_g"]
-size = Vector3(10.88, 5.76, 8.83)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_h"]
-size = Vector3(9.75, 5.53, 6.87)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_i"]
-size = Vector3(9.65, 5.53, 7.71)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_j"]
-size = Vector3(10.28, 7.78, 6.87)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_k"]
-size = Vector3(6.91, 8.62, 7.65)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_l"]
-size = Vector3(7.75, 7.87, 7.65)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_m"]
-size = Vector3(10.71, 5.53, 10.71)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_n"]
-size = Vector3(13.38, 8.53, 10.33)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_o"]
-size = Vector3(9.53, 8.53, 7.71)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_p"]
-size = Vector3(9.30, 6.88, 7.43)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_q"]
-size = Vector3(9.30, 6.88, 6.64)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_r"]
-size = Vector3(7.71, 8.56, 7.65)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_s"]
-size = Vector3(10.55, 8.53, 8.15)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_city_t"]
-size = Vector3(9.85, 8.67, 10.55)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_trunk"]
-size = Vector3(0.6, 4, 0.6)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_car_sedan"]
-size = Vector3(3.00, 2.08, 5.10)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_car_van"]
-size = Vector3(3.00, 2.16, 5.50)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_car_taxi"]
-size = Vector3(3.00, 2.40, 5.50)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_car_suv"]
-size = Vector3(3.00, 2.08, 5.40)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_car_police"]
-size = Vector3(3.00, 2.08, 6.20)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_city_a"]
 size = Vector3(9.75, 6.25, 7.71)
