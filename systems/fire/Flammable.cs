@@ -59,6 +59,13 @@ public partial class Flammable : Node
     /// <summary>Filled in by FireSystem when this ignites. Neighbour + precomputed distance falloff weight.</summary>
     internal List<(Flammable Target, float Weight)> Neighbours { get; } = new();
 
+    /// <summary>
+    /// True between Register and Unregister. Cached neighbour lists may still hold objects that have since
+    /// left the tree (e.g. a building being respawned); this plain C# flag lets the hot loop skip them
+    /// without touching the freed native object.
+    /// </summary>
+    internal bool IsRegistered { get; set; }
+
     private StandardMaterial3D? _material;
     private Color _baseColor = Colors.White;
     private float _timeBurning;

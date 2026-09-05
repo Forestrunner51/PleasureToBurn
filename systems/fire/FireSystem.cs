@@ -77,6 +77,7 @@ public partial class FireSystem : Node
     {
         if (!_all.Add(flammable))
             return;
+        flammable.IsRegistered = true;
         CellFor(flammable.GlobalPosition, create: true)!.Add(flammable);
     }
 
@@ -84,6 +85,7 @@ public partial class FireSystem : Node
     {
         if (!_all.Remove(flammable))
             return;
+        flammable.IsRegistered = false;
         CellFor(flammable.GlobalPosition, create: false)?.Remove(flammable);
         if (_burning.Remove(flammable))
             EmitSignal(SignalName.BurningCountChanged, _burning.Count);
@@ -106,6 +108,8 @@ public partial class FireSystem : Node
     /// <summary>Forget everything. Call when unloading a location.</summary>
     public void Reset()
     {
+        foreach (var flammable in _all)
+            flammable.IsRegistered = false;
         _all.Clear();
         _burning.Clear();
         _warm.Clear();
@@ -127,7 +131,7 @@ public partial class FireSystem : Node
             if (output > 0f)
             {
                 foreach (var (target, weight) in source.Neighbours)
-                    if (target.State == BurnState.Unburnt)
+                    if (target.IsRegistered && target.State == BurnState.Unburnt)
                         target.AddHeat(output * weight);
             }
 

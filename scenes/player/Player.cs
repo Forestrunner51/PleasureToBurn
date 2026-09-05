@@ -40,6 +40,22 @@ public partial class Player : CharacterBody3D
         Input.MouseMode = Input.MouseModeEnum.Captured;
     }
 
+    /// <summary>
+    /// Vehicles call this to take over. Disabled: no processing, no input, invisible, collision off.
+    /// The camera is handed back by the caller making ours current again.
+    /// </summary>
+    public void SetControlEnabled(bool enabled)
+    {
+        ProcessMode = enabled ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
+        Visible = enabled;
+        GetNode<CollisionShape3D>("CollisionShape3D").Disabled = !enabled;
+        if (enabled)
+        {
+            Camera.Current = true;
+            Velocity = Vector3.Zero;
+        }
+    }
+
     public override void _PhysicsProcess(double delta)
     {
         var dt = (float)delta;

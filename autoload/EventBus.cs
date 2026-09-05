@@ -23,5 +23,14 @@ public partial class EventBus : Node
     /// <summary>Contraband burned so far at the current location.</summary>
     [Signal] public delegate void ContrabandProgressEventHandler(int burned, int total);
 
+    /// <summary>One-line current objective for the HUD.</summary>
+    [Signal] public delegate void ObjectiveChangedEventHandler(string objective);
+
+    /// <summary>Player's money changed.</summary>
+    [Signal] public delegate void MoneyChangedEventHandler(int money);
+
+    /// <summary>A dispatch radio line to show briefly.</summary>
+    [Signal] public delegate void RadioMessageEventHandler(string message);
+
     public override void _EnterTree() => Instance = this;
 }

@@ -11,6 +11,10 @@ No contracts, truck, hub, save/load, or story yet. Do not add scope until this i
 Slice 2 added (design-review follow-ups): heat reticle, ignition feedback (burst + light + procedural whoomp,
 per-object flames), segmented bookshelves with upward spread bias, scarce fuel (no refill key; fuel cans in the room).
 
+Slice 3 added the core loop end to end: an outdoor world with a depot, a drivable truck, four enterable houses on
+sites, and a dispatch contract loop (take report → drive → burn → return → get paid). Startup scene is now
+`scenes/world/world.tscn`; `scenes/locations/test_room.tscn` stays as the fast fire-tuning scene.
+
 ## Folder layout
 
 ```
@@ -21,11 +25,14 @@ resources/         Data-only tuning as .tres files + their C# Resource classes
   burn_profiles/     paper / wood / fabric
   flamethrower/      one .tres per flamethrower tier
 scenes/
+  world/             world.tscn (startup), Site (a lot that spawns a building), ContractManager, Dispatch
+  vehicles/          Truck (VehicleBody3D) + ChaseCamera
   player/            Player (controller) + Flamethrower (child of camera)
   props/             Placeholder props. One .tscn per prop, instanced into locations. FuelCan is the first IInteractable.
   interaction/       IInteractable contract
   vfx/               Ignition burst, burning flames, ProceduralAudio (placeholder sounds generated in code)
-  locations/         Playable areas. Root node has Location.cs.
+  locations/         Buildings. Root node has Location.cs. house.tscn is the enterable version of test_room
+                     (doorway on +Z, roof, interior light); props are copied from test_room, keep them in sync.
   ui/                HUD, pause menu (one folder per scene)
 tests/             Headless test scenes. `tests/run_tests.sh` builds + runs them (exit code = result).
 ```
@@ -76,6 +83,26 @@ props have proper collision sizes.
   the test room has two cans, so the player has ~50 s of flame for 56 books and must let fire spread.
 - Flame cone is a fixed rotating ring pattern with small `Jitter`, so a steady aim gives a steady result.
 
+## Contract loop (ContractManager)
+
+- States: `Idle → Accepted → Cleared → Idle`. Dispatch (an IInteractable console at the depot) is the only input:
+  it takes a report when Idle and pays out when Cleared.
+- Taking a report picks a random `Site`, calls `Site.Respawn()` for a fresh building, and subscribes to its
+  `Location.ProgressChanged`. Precision jobs (`PrecisionChance`) deduct `PrecisionPenaltyPerObject` per charred
+  non-contraband item; standard jobs do not care.
+- The Beacon (a tall translucent cylinder) marks the target site, then the depot. Objective and radio text go
+  through EventBus (`ObjectiveChanged`, `RadioMessage`, `MoneyChanged`).
+- Sites are found by the `"sites"` group, not an exported array (see gotchas).
+- Report lines live on the manager's `ReportLines` export. Keep them dry and original.
+
+## Truck
+
+- `VehicleBody3D` with four `VehicleWheel3D`; all wheels drive, fronts steer. Interact to enter, interact again
+  to exit at `ExitPoint`. While driving the Player is `ProcessMode.Disabled`, hidden, collision off, and the
+  `ChaseCamera` (TopLevel, follows yaw only) is current.
+- Truck is on layer 2 so the player's aim ray sees it; mask 2 so it never touches the player.
+- The depot has a `FuelPump` (a FuelCan with 99 charges). Houses still carry two single-use cans.
+
 ## Communication rules
 
 - **Call down, signal up.** Parents call child methods; children never reach for parents or siblings by path.
@@ -101,12 +128,19 @@ props have proper collision sizes.
 - C# exported property names are PascalCase in `.tscn`/`.tres` (`IsContraband = true`).
 - Each `Flammable` currently duplicates its material for tinting. Fine for tens of objects; hundreds want a shader
   with per-instance data.
+- **Node exports in hand-written .tscn need `node_paths=PackedStringArray("Prop")` on the node header** or they load
+  as null. A C# `Node[]` export did not resolve even with it (4.8 dev 3); use a group lookup instead.
+- Freed nodes and cached references: `QueueFree` runs at end of frame, so a respawned building overlaps its
+  predecessor for one frame and the fire spread cache can hold soon-to-be-freed objects. `Flammable.IsRegistered`
+  is a plain C# flag checked in the hot loop; never call into a possibly freed Godot object there.
+- An exception inside an `async Task` test is swallowed and the process hangs. Tests wrap their body in
+  `RunGuardedAsync` and quit with code 2 on exception.
 
 ## Next slices (in brief priority order)
 
-1. **Playtest.** Is burning a shelf fun? Tune profiles, bias, fuel before adding anything.
+1. **Playtest the loop.** Drive, enter, burn, return. Tune truck handling, house distance, fuel, pay.
 2. Extinguish phase: a hose/extinguisher that removes heat (negative AddHeat path) and puts fires out. Same sim, run backwards.
-3. Collateral damage counter + two contract types (precision / release) from one penalty number.
-4. Neighbour refresh on a slow timer so thrown/moved objects can catch fire.
-5. Location/contract data: `ContractDefinition` resource (location scene, contraband count, pay), modular room kit.
-6. Truck driving (basic), hub scene, money and upgrades (swap `FlamethrowerStats`), save/load.
+3. Neighbour refresh on a slow timer so thrown/moved objects can catch fire.
+4. More building kits: a second house layout, a shop, an apartment. `Site.Building` already takes any Location scene.
+5. Upgrades shop at the depot: spend money to swap `FlamethrowerStats` / truck stats. Then save/load.
+6. Story drip: a line of text on `BookData`, read before you burn, optional 'save it' choice.

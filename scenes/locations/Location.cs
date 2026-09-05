@@ -3,14 +3,19 @@ using Godot;
 namespace PleasureToBurn;
 
 /// <summary>
-/// Root script for a playable location. For now it only tracks the contraband objective:
-/// counts every Flammable marked IsContraband under it and reports progress as they char.
-/// The contract/data-driven layer will build on this later; keep it thin.
+/// Root script for a playable location (a building). Tracks the contraband objective:
+/// counts every Flammable marked IsContraband under it and reports progress as they char,
+/// plus collateral (anything else that charred) for precision contracts.
+/// ContractManager subscribes to ProgressChanged; the EventBus emission is for the HUD.
 /// </summary>
 public partial class Location : Node3D
 {
+    public event Action<Location>? ProgressChanged;
+
     public int ContrabandTotal { get; private set; }
     public int ContrabandBurned { get; private set; }
+    /// <summary>Non-contraband objects charred inside this location.</summary>
+    public int CollateralBurned { get; private set; }
     public bool AllContrabandBurned => ContrabandTotal > 0 && ContrabandBurned >= ContrabandTotal;
 
     public override void _Ready()
@@ -30,14 +35,20 @@ public partial class Location : Node3D
 
     private void OnObjectCharred(Flammable flammable)
     {
-        if (!flammable.IsContraband || !IsAncestorOf(flammable))
+        if (!IsAncestorOf(flammable))
             return;
-        ContrabandBurned++;
+        if (flammable.IsContraband)
+            ContrabandBurned++;
+        else
+            CollateralBurned++;
         ReportProgress();
     }
 
-    private void ReportProgress() =>
+    private void ReportProgress()
+    {
         EventBus.Instance.EmitSignal(EventBus.SignalName.ContrabandProgress, ContrabandBurned, ContrabandTotal);
+        ProgressChanged?.Invoke(this);
+    }
 
     private static int CountContraband(Node root)
     {

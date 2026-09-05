@@ -13,7 +13,21 @@ public partial class FireTests : Node3D
     private int _failures;
     private BurnProfile _paper = null!;
 
-    public override void _Ready() => _ = RunAsync();
+    public override void _Ready() => _ = RunGuardedAsync();
+
+    /// <summary>An exception inside an async test would otherwise be swallowed and the process would hang.</summary>
+    private async Task RunGuardedAsync()
+    {
+        try
+        {
+            await RunAsync();
+        }
+        catch (Exception e)
+        {
+            GD.PrintErr($"FIRE TESTS CRASHED: {e}");
+            GetTree().Quit(2);
+        }
+    }
 
     private async Task RunAsync()
     {
