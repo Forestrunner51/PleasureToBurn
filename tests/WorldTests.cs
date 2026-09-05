@@ -40,6 +40,8 @@ public partial class WorldTests : Node3D
         var dispatch = world.GetNode<Dispatch>("Depot/Dispatch");
         var sites = world.GetNode("Sites").GetChildren().OfType<Site>().ToList();
 
+        Check(player.Camera.Current, "player's first-person camera is the current camera at start");
+        Check(!truck.GetNode<Camera3D>("ChaseRig/SpringArm3D/ChaseCamera").Current && !truck.GetNode<Camera3D>("CabCamera").Current, "truck cameras are not current at start");
         Check(sites.Count == 4, $"world has 4 sites (got {sites.Count})");
         Check(sites.All(s => s.Current is not null), "every site spawned its building");
         Check(manager.Sites.Count == sites.Count, "contract manager knows every site");

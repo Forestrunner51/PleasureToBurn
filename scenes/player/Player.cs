@@ -38,6 +38,9 @@ public partial class Player : CharacterBody3D
         Flamethrower = GetNode<Flamethrower>("Head/Camera3D/Flamethrower");
         _gravity = (float)ProjectSettings.GetSetting("physics/3d/default_gravity", 9.8);
         Input.MouseMode = Input.MouseModeEnum.Captured;
+        // Other cameras (the truck's) may have entered the tree first and become current by default.
+        // The player on foot is always the view unless a vehicle explicitly takes over.
+        Camera.Current = true;
     }
 
     /// <summary>
