@@ -85,7 +85,7 @@ public partial class WorldTests : Node3D
         truck.Interact(player);
         Check(truck.IsDriving && truck.Driver == player, "player enters the truck");
         Check(!player.Visible, "player is hidden while driving");
-        Check(truck.GetNode<Camera3D>("ChaseCamera").Current, "chase camera takes over");
+        Check(truck.GetNode<Camera3D>("ChaseRig/SpringArm3D/ChaseCamera").Current, "chase camera takes over");
         Check(truck.Prompt == "", "occupied truck shows no prompt");
         truck.Exit();
         Check(!truck.IsDriving && player.Visible, "player exits the truck");

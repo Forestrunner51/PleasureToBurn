@@ -13,7 +13,9 @@ namespace PleasureToBurn;
 ///   ├── WheelFL/FR (VehicleWheel3D, use_as_steering + traction) with a cylinder mesh child
 ///   ├── WheelRL/RR (VehicleWheel3D, use_as_traction)
 ///   ├── ExitPoint (Marker3D)          ← where the player stands after getting out
-///   └── ChaseCamera (Camera3D, top_level, ChaseCamera.cs)
+///   ├── CabCamera (Camera3D)           ← first-person view from the driver's seat
+///   └── ChaseRig (Node3D, top_level, ChaseCamera.cs)
+///       └── SpringArm3D → ChaseCamera (Camera3D)   ← arm shortens when something is behind the truck
 ///
 /// TUNE BY EYE: EnginePower, MaxSteerDegrees, wheel suspension values in the scene, mass, centre of mass.
 /// Godot 4.x note: VehicleBody3D uses engine_force/brake/steering; there is no gearbox, so top speed comes
@@ -31,14 +33,20 @@ public partial class Truck : VehicleBody3D, IInteractable
 
     public string Prompt => IsDriving ? "" : "[E] Drive the truck";
 
+    private ChaseCamera _chaseRig = null!;
     private Camera3D _chaseCamera = null!;
+    private Camera3D _cabCamera = null!;
     private Marker3D _exitPoint = null!;
+    private bool _useCabCamera;
 
     public override void _Ready()
     {
-        _chaseCamera = GetNode<Camera3D>("ChaseCamera");
+        _chaseRig = GetNode<ChaseCamera>("ChaseRig");
+        _chaseCamera = GetNode<Camera3D>("ChaseRig/SpringArm3D/ChaseCamera");
+        _cabCamera = GetNode<Camera3D>("CabCamera");
         _exitPoint = GetNode<Marker3D>("ExitPoint");
         _chaseCamera.Current = false;
+        _cabCamera.Current = false;
     }
 
     public void Interact(Player player) => Enter(player);
@@ -50,8 +58,11 @@ public partial class Truck : VehicleBody3D, IInteractable
         Driver = player;
         IsDriving = true;
         player.SetControlEnabled(false);
-        _chaseCamera.Current = true;
-        EventBus.Instance.EmitSignal(EventBus.SignalName.RadioMessage, "W/S drive · A/D steer · Space brake · E get out");
+        _chaseRig.Snap();
+        ApplyCamera();
+        // The player's aim ray stops updating while disabled, so clear what it last published.
+        EventBus.Instance.EmitSignal(EventBus.SignalName.AimChanged, -1f, 0, "");
+        EventBus.Instance.EmitSignal(EventBus.SignalName.RadioMessage, "W/S drive · A/D steer · Space brake · C camera · E get out");
     }
 
     public void Exit()
@@ -92,10 +103,26 @@ public partial class Truck : VehicleBody3D, IInteractable
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (IsDriving && @event.IsActionPressed("interact"))
+        if (!IsDriving)
+            return;
+        if (@event.IsActionPressed("interact"))
         {
             Exit();
             GetViewport().SetInputAsHandled();
         }
+        else if (@event.IsActionPressed("camera_toggle"))
+        {
+            _useCabCamera = !_useCabCamera;
+            ApplyCamera();
+            GetViewport().SetInputAsHandled();
+        }
+    }
+
+    private void ApplyCamera()
+    {
+        if (_useCabCamera)
+            _cabCamera.Current = true;
+        else
+            _chaseCamera.Current = true;
     }
 }
