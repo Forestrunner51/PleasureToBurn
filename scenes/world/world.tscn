@@ -1,4 +1,4 @@
-[gd_scene load_steps=89 format=3]
+[gd_scene load_steps=92 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/vehicles/truck.tscn" id="2_truck"]
@@ -9,6 +9,9 @@
 [ext_resource type="Script" path="res://systems/fire/FireVfx.cs" id="7_vfx"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="8_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu/pause_menu.tscn" id="9_pause"]
+[ext_resource type="PackedScene" path="res://scenes/ui/job_board/job_board.tscn" id="ui_job_board"]
+[ext_resource type="PackedScene" path="res://scenes/ui/invoice/invoice_panel.tscn" id="ui_invoice"]
+[ext_resource type="PackedScene" path="res://scenes/ui/day_end/day_end_panel.tscn" id="ui_day_end"]
 [ext_resource type="PackedScene" path="res://scenes/props/fuel_can.tscn" id="10_fuel_can"]
 
 [ext_resource type="PackedScene" path="res://assets/models/city/building-type-a.glb" id="city_a"]
@@ -1032,3 +1035,9 @@ script = ExtResource("7_vfx")
 [node name="HUD" parent="." instance=ExtResource("8_hud")]
 
 [node name="PauseMenu" parent="." instance=ExtResource("9_pause")]
+
+[node name="JobBoard" parent="." instance=ExtResource("ui_job_board")]
+
+[node name="InvoicePanel" parent="." instance=ExtResource("ui_invoice")]
+
+[node name="DayEndPanel" parent="." instance=ExtResource("ui_day_end")]

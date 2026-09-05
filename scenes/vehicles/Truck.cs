@@ -48,6 +48,8 @@ public partial class Truck : VehicleBody3D, IInteractable
         _exitPoint = GetNode<Marker3D>("ExitPoint");
         _chaseCamera.Current = false;
         _cabCamera.Current = false;
+        if (Career.Instance is { } career)
+            EnginePower *= career.TruckPowerMultiplier;
     }
 
     public void Interact(Player player) => Enter(player);

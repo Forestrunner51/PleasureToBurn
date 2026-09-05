@@ -106,17 +106,31 @@ props have proper collision sizes.
   the test room has two cans, so the player has ~50 s of flame for 56 books and must let fire spread.
 - Flame cone is a fixed rotating ring pattern with small `Jitter`, so a steady aim gives a steady result.
 
-## Contract loop (ContractManager)
+## The day loop (ContractManager + Career)
 
-- States: `Idle → Accepted → Cleared → Idle`. Dispatch (an IInteractable console at the depot) is the only input:
-  it takes a report when Idle and pays out when Cleared.
-- Taking a report picks a random `Site`, calls `Site.Respawn()` for a fresh building, and subscribes to its
-  `Location.ProgressChanged`. Precision jobs (`PrecisionChance`) deduct `PrecisionPenaltyPerObject` per charred
-  non-contraband item; standard jobs do not care.
-- The Beacon (a tall translucent cylinder) marks the target site, then the depot. Objective and radio text go
-  through EventBus (`ObjectiveChanged`, `RadioMessage`, `MoneyChanged`).
+Reference points: PowerWash Simulator (job list + itemised invoice), Euro Truck Simulator 2 (money → upgrades),
+Papers Please (a shift is a clock, the day ends, tomorrow is harder).
+
+- **Career** (autoload, persistent, saved to `user://career.cfg`): money, day, reputation (-5..20), upgrade levels.
+  `EffectiveStats(base)` returns an upgraded *copy* of a FlamethrowerStats; `TruckPowerMultiplier` for the truck.
+  Upgrade lines are `UpgradeDefinition` resources in `resources/upgrades/`; their effects are a switch in Career.
+- **Shift clock**: `ShiftLengthSeconds` (480) counts down in ContractManager. When it hits zero no new jobs can be
+  taken; the active one can be finished. Dispatch then offers "Sign off".
+- **Job board** (`JobBoard` panel): `GenerateOffers()` gives `OffersPerVisit` distinct sites with type, item count,
+  estimated pay, distance and a return-by `BonusSeconds` derived from distance. `Accept(i)` respawns the building.
+- **Invoice** (`InvoicePanel`): `PreviewInvoice()` / `Settle()` itemise base pay (precision rate is +30%), collateral
+  penalty (precision only), deadline bonus (+25%), reputation multiplier (+5%/rep), total, 1–3 stars, rep delta.
+- **Day end** (`DayEndPanel`): summary + upgrade shop; "Start next day" calls `EndDay()` and reloads the world so
+  upgrades apply (they are read on `_Ready` by Flamethrower and Truck).
+- States: `Idle → Accepted → Cleared → Idle`. Dispatch is the only input; its prompt reflects state and shift.
+- Panels derive from `ModalPanel` (pause + show mouse; Esc closes; `AnyOpen` stops the pause menu stacking). They
+  are found by group, so a world scene just needs one instance of each.
+- The Beacon marks the target site (20 m up), then the depot. Objective/radio/money/clock go through EventBus.
 - Sites are found by the `"sites"` group, not an exported array (see gotchas).
 - Report lines live on the manager's `ReportLines` export. Keep them dry and original.
+
+TUNE BY EYE: shift length vs. job duration (aim for 3–5 jobs a day), pay vs. upgrade costs (first upgrade after
+day 1, all three lines maxed around day 6–8), deadline allowance (`AssumedSpeedMetresPerSecond`).
 
 ## Truck
 
@@ -161,7 +175,8 @@ props have proper collision sizes.
 
 ## Next slices (in brief priority order)
 
-1. **Playtest the loop.** Drive, enter, burn, return. Tune truck handling, house distance, fuel, pay.
+1. **Playtest the day loop.** Does a day feel like a day? Tune shift length, pay, upgrade costs, deadlines.
+1b. Shelf-as-expected-loss rule so precision jobs are fair (shelf bodies should not count as collateral).
 2. Extinguish phase: a hose/extinguisher that removes heat (negative AddHeat path) and puts fires out. Same sim, run backwards.
 3. Neighbour refresh on a slow timer so thrown/moved objects can catch fire.
 4. More building kits: a second house layout, a shop, an apartment. `Site.Building` already takes any Location scene.

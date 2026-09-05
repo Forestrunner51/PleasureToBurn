@@ -17,7 +17,7 @@ public partial class PauseMenu : CanvasLayer
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (!@event.IsActionPressed("pause"))
+        if (!@event.IsActionPressed("pause") || ModalPanel.AnyOpen)
             return;
         if (Visible) Close(); else Open();
         GetViewport().SetInputAsHandled();

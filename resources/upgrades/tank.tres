@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="UpgradeDefinition" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/upgrades/UpgradeDefinition.cs" id="1_def"]
+
+[resource]
+script = ExtResource("1_def")
+Id = "tank"
+DisplayName = "Bigger Tank"
+Description = "+50 fuel per level. Fewer trips to the pump."
+BaseCost = 400
+CostGrowth = 300
+MaxLevel = 3

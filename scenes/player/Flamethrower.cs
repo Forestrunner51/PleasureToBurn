@@ -52,6 +52,8 @@ public partial class Flamethrower : Node3D
     {
         _camera = GetParent<Camera3D>();
         _jet = GetNodeOrNull<CpuParticles3D>("FlameJet");
+        if (Career.Instance is { } career)
+            Stats = career.EffectiveStats(Stats); // base .tres stays untouched
         Refill();
     }
 

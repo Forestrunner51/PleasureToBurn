@@ -29,6 +29,12 @@ public partial class EventBus : Node
     /// <summary>Player's money changed.</summary>
     [Signal] public delegate void MoneyChangedEventHandler(int money);
 
+    /// <summary>Reputation changed.</summary>
+    [Signal] public delegate void ReputationChangedEventHandler(int reputation);
+
+    /// <summary>Shift clock: seconds left in the working day, and which day it is.</summary>
+    [Signal] public delegate void ShiftTimeChangedEventHandler(float secondsLeft, int day);
+
     /// <summary>A dispatch radio line to show briefly.</summary>
     [Signal] public delegate void RadioMessageEventHandler(string message);
 

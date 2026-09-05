@@ -3,10 +3,11 @@ using Godot;
 namespace PleasureToBurn;
 
 /// <summary>
-/// The dispatch console at the depot. One interactable, three meanings depending on contract state:
-/// take a report, nothing (job in progress), or collect payment.
+/// The dispatch console at the depot. One interactable, three meanings depending on state:
+/// open the job board, settle the invoice, or sign off for the day.
 ///
-/// Scene setup: StaticBody3D on layer 2 with a mesh and collision; set Manager.
+/// Scene setup: StaticBody3D on layer 2 with a mesh and collision; set Manager. The UI panels are
+/// found by group ("job_board", "invoice_panel", "day_end_panel") so the scene needs no wiring.
 /// </summary>
 public partial class Dispatch : StaticBody3D, IInteractable
 {
@@ -14,8 +15,9 @@ public partial class Dispatch : StaticBody3D, IInteractable
 
     public string Prompt => Manager?.State switch
     {
-        ContractState.Idle => "[E] Take the next report",
-        ContractState.Cleared => "[E] Collect payment",
+        ContractState.Idle when Manager.ShiftOver => "[E] Sign off for the day",
+        ContractState.Idle => "[E] Check the job board",
+        ContractState.Cleared => "[E] Settle the invoice",
         ContractState.Accepted => "Dispatch: job in progress",
         _ => "",
     };
@@ -26,12 +28,19 @@ public partial class Dispatch : StaticBody3D, IInteractable
             return;
         switch (Manager.State)
         {
+            case ContractState.Idle when Manager.ShiftOver:
+                Find<DayEndPanel>(DayEndPanel.Group)?.Open(Manager);
+                break;
             case ContractState.Idle:
-                Manager.TakeReport();
+                Find<JobBoard>(JobBoard.Group)?.Open(Manager);
                 break;
             case ContractState.Cleared:
-                Manager.CollectPayment();
+                var invoice = Manager.Settle();
+                if (invoice is not null)
+                    Find<InvoicePanel>(InvoicePanel.Group)?.Open(invoice);
                 break;
         }
     }
+
+    private T? Find<T>(string group) where T : Node => GetTree().GetFirstNodeInGroup(group) as T;
 }

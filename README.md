@@ -3,9 +3,11 @@
 A single-player 3D job simulator built with **Godot 4.8 .NET** and **C#**. You are a fireman in a dry, satirical
 dystopia where books are banned, and the fire department's job is to burn them.
 
-The prototype now runs the whole core loop with placeholder cubes: take a report at the depot, drive the truck to
-the address, walk into the house, burn the contraband with the flamethrower (fire spreads on its own), drive back,
-get paid. See `PROJECT_NOTES.md` for structure, conventions and what comes next.
+The prototype runs a full day loop: check the job board at the depot, pick a report, drive the fire truck to the
+address, walk in, burn the contraband with the flamethrower (fire spreads on its own), drive back, settle an
+itemised invoice with a star rating, repeat until the shift clock runs out, then sign off, buy upgrades, and start
+the next day. Progress saves between sessions. Art is Kenney's CC0 kits. See `PROJECT_NOTES.md` for structure,
+conventions and what comes next.
 
 ## Requirements
 

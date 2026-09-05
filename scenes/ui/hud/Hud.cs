@@ -14,7 +14,9 @@ public partial class Hud : CanvasLayer
     private Label _objectiveLabel = null!;
     private Label _moneyLabel = null!;
     private Label _radioLabel = null!;
+    private Label _clockLabel = null!;
     private Tween? _radioTween;
+    private int _reputation;
 
     public override void _Ready()
     {
@@ -27,6 +29,7 @@ public partial class Hud : CanvasLayer
         _objectiveLabel = GetNode<Label>("Root/TopCenter/ObjectiveLabel");
         _radioLabel = GetNode<Label>("Root/TopCenter/RadioLabel");
         _moneyLabel = GetNode<Label>("Root/TopRight/MoneyLabel");
+        _clockLabel = GetNode<Label>("Root/TopRight/ClockLabel");
         _radioLabel.Modulate = new Color(1, 1, 1, 0);
 
         var bus = EventBus.Instance;
@@ -36,6 +39,8 @@ public partial class Hud : CanvasLayer
         bus.ObjectiveChanged += OnObjectiveChanged;
         bus.MoneyChanged += OnMoneyChanged;
         bus.RadioMessage += OnRadioMessage;
+        bus.ShiftTimeChanged += OnShiftTimeChanged;
+        bus.ReputationChanged += OnReputationChanged;
         if (FireSystem.Instance is { } fire)
         {
             fire.BurningCountChanged += OnBurningCountChanged;
@@ -52,6 +57,8 @@ public partial class Hud : CanvasLayer
         bus.ObjectiveChanged -= OnObjectiveChanged;
         bus.MoneyChanged -= OnMoneyChanged;
         bus.RadioMessage -= OnRadioMessage;
+        bus.ShiftTimeChanged -= OnShiftTimeChanged;
+        bus.ReputationChanged -= OnReputationChanged;
         if (FireSystem.Instance is { } fire)
             fire.BurningCountChanged -= OnBurningCountChanged;
     }
@@ -71,6 +78,16 @@ public partial class Hud : CanvasLayer
     private void OnObjectiveChanged(string objective) => _objectiveLabel.Text = objective;
 
     private void OnMoneyChanged(int money) => _moneyLabel.Text = $"${money}";
+
+    private void OnReputationChanged(int reputation) => _reputation = reputation;
+
+    private void OnShiftTimeChanged(float secondsLeft, int day)
+    {
+        _clockLabel.Text = secondsLeft <= 0f
+            ? $"Day {day}  ·  shift over  ·  rep {_reputation}"
+            : $"Day {day}  ·  {ContractManager.FormatTime(secondsLeft)} left  ·  rep {_reputation}";
+        _clockLabel.AddThemeColorOverride("font_color", secondsLeft <= 60f && secondsLeft > 0f ? new Color(1f, 0.5f, 0.4f) : new Color(0.85f, 0.85f, 0.8f));
+    }
 
     /// <summary>Radio lines fade in, hold, fade out. A new line interrupts the old one.</summary>
     private void OnRadioMessage(string message)
