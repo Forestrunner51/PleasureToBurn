@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/models/furniture/lampRoundFloor.glb" id="1_model"]
+[ext_resource type="Script" path="res://systems/fire/Flammable.cs" id="2_flammable"]
+[ext_resource type="Resource" path="res://resources/burn_profiles/wood.tres" id="3_profile"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_prop"]
+size = Vector3(0.304, 1.720, 0.351)
+
+[node name="lamp" type="StaticBody3D"]
+collision_layer = 4
+collision_mask = 0
+
+[node name="Model" parent="." instance=ExtResource("1_model")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, -0.12, -0, 0.12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 0.86, 0)
+shape = SubResource("BoxShape3D_prop")
+
+[node name="Flammable" type="Node" parent="."]
+script = ExtResource("2_flammable")
+Profile = ExtResource("3_profile")
+IsContraband = false

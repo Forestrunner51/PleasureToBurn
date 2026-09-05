@@ -31,8 +31,11 @@ public partial class Flammable : Node
     /// <summary>Burning this counts toward the location's contraband objective.</summary>
     [Export] public bool IsContraband { get; set; }
 
-    /// <summary>Visual whose material is tinted by burn state. Defaults to the first MeshInstance3D sibling.</summary>
-    [Export] public MeshInstance3D? Visual { get; set; }
+    /// <summary>
+    /// Root to search for meshes to tint. Defaults to the parent body, so an imported .glb instanced under the
+    /// body (with its own nested MeshInstance3Ds) is picked up automatically.
+    /// </summary>
+    [Export] public Node3D? Visual { get; set; }
 
     public BurnState State { get; private set; } = BurnState.Unburnt;
 
@@ -66,8 +69,8 @@ public partial class Flammable : Node
     /// </summary>
     internal bool IsRegistered { get; set; }
 
-    private StandardMaterial3D? _material;
-    private Color _baseColor = Colors.White;
+    /// <summary>One entry per mesh surface: the unique material we tint, and the colour it started with.</summary>
+    private readonly List<(StandardMaterial3D Material, Color BaseColor)> _surfaces = new();
     private float _timeBurning;
     private bool _heatedSinceLastTick;
 
@@ -77,8 +80,8 @@ public partial class Flammable : Node
     public override void _Ready()
     {
         Body = GetParent<Node3D>();
-        Visual ??= FindVisual();
-        SetupMaterial();
+        Visual ??= Body;
+        SetupMaterials();
         FireSystem.Instance?.Register(this);
     }
 
@@ -151,47 +154,68 @@ public partial class Flammable : Node
     /// <summary>Placeholder feedback: tint toward ember colour while heating, glow while burning, black when charred.</summary>
     private void UpdateVisual()
     {
-        if (_material is null)
+        if (_surfaces.Count == 0)
             return;
+        float toChar, emission;
+        Color tintTarget;
         switch (State)
         {
             case BurnState.Unburnt:
                 var warmth = Mathf.Clamp(Heat / Profile.IgnitionTemperature, 0f, 1f);
-                _material.AlbedoColor = _baseColor.Lerp(EmberColor, warmth * 0.5f);
-                _material.EmissionEnergyMultiplier = 0f;
+                tintTarget = EmberColor; toChar = warmth * 0.5f; emission = 0f;
                 break;
             case BurnState.Burning:
-                _material.AlbedoColor = _baseColor.Lerp(CharredColor, 1f - Mathf.Clamp(FuelRemaining / Profile.Fuel, 0f, 1f));
-                _material.EmissionEnergyMultiplier = 3f * Intensity;
+                tintTarget = CharredColor;
+                toChar = 1f - Mathf.Clamp(FuelRemaining / Profile.Fuel, 0f, 1f);
+                emission = 3f * Intensity;
                 break;
-            case BurnState.Charred:
-                _material.AlbedoColor = CharredColor;
-                _material.EmissionEnergyMultiplier = 0f;
+            default:
+                tintTarget = CharredColor; toChar = 1f; emission = 0f;
                 break;
+        }
+        foreach (var (material, baseColor) in _surfaces)
+        {
+            material.AlbedoColor = baseColor.Lerp(tintTarget, toChar);
+            material.EmissionEnergyMultiplier = emission;
         }
     }
 
-    private MeshInstance3D? FindVisual()
-    {
-        foreach (var child in Body.GetChildren())
-            if (child is MeshInstance3D mesh)
-                return mesh;
-        return null;
-    }
-
-    private void SetupMaterial()
+    /// <summary>
+    /// Gives every surface of every mesh under Visual its own material so it can be tinted independently.
+    /// Textured materials (Kenney colormaps) tint correctly because albedo colour multiplies the texture.
+    /// NOTE: fine for a prototype; hundreds of unique materials will want a shader with per-instance data.
+    /// </summary>
+    private void SetupMaterials()
     {
         if (Visual is null)
             return;
-        // Each flammable gets its own material instance so it can be tinted independently.
-        // NOTE: fine for a prototype; hundreds of unique materials will want a shader with per-instance data.
-        var source = Visual.MaterialOverride as StandardMaterial3D
-                     ?? Visual.Mesh?.SurfaceGetMaterial(0) as StandardMaterial3D;
-        _material = source?.Duplicate() as StandardMaterial3D ?? new StandardMaterial3D();
-        _baseColor = _material.AlbedoColor;
-        _material.EmissionEnabled = true;
-        _material.Emission = EmberColor;
-        _material.EmissionEnergyMultiplier = 0f;
-        Visual.MaterialOverride = _material;
+        foreach (var mesh in MeshesUnder(Visual))
+        {
+            var surfaceCount = mesh.Mesh?.GetSurfaceCount() ?? 0;
+            for (var i = 0; i < surfaceCount; i++)
+            {
+                var source = mesh.GetActiveMaterial(i) as StandardMaterial3D;
+                var material = source?.Duplicate() as StandardMaterial3D ?? new StandardMaterial3D();
+                material.EmissionEnabled = true;
+                material.Emission = EmberColor;
+                material.EmissionEnergyMultiplier = 0f;
+                mesh.SetSurfaceOverrideMaterial(i, material);
+                _surfaces.Add((material, material.AlbedoColor));
+            }
+        }
+    }
+
+    /// <summary>All MeshInstance3Ds under root, not descending into other flammable bodies (e.g. books on a shelf).</summary>
+    private static IEnumerable<MeshInstance3D> MeshesUnder(Node root)
+    {
+        foreach (var child in root.GetChildren())
+        {
+            if (child is MeshInstance3D mesh)
+                yield return mesh;
+            if (child.GetNodeOrNull<Flammable>("Flammable") is not null)
+                continue;
+            foreach (var nested in MeshesUnder(child))
+                yield return nested;
+        }
     }
 }

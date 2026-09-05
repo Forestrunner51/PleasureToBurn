@@ -1,30 +1,24 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://systems/fire/Flammable.cs" id="1_flammable"]
-[ext_resource type="Resource" path="res://resources/burn_profiles/wood.tres" id="2_profile"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_base"]
-albedo_color = Color(0.5, 0.36, 0.22, 1)
-roughness = 0.9
-
-[sub_resource type="BoxMesh" id="BoxMesh_prop"]
-material = SubResource("StandardMaterial3D_base")
-size = Vector3(1.4, 0.06, 0.8)
+[ext_resource type="PackedScene" path="res://assets/models/furniture/table.glb" id="1_model"]
+[ext_resource type="Script" path="res://systems/fire/Flammable.cs" id="2_flammable"]
+[ext_resource type="Resource" path="res://resources/burn_profiles/wood.tres" id="3_profile"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_prop"]
-size = Vector3(1.4, 0.06, 0.8)
+size = Vector3(1.683, 0.653, 0.895)
 
 [node name="table" type="StaticBody3D"]
 collision_layer = 4
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_prop")
+[node name="Model" parent="." instance=ExtResource("1_model")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, -0.84149, -0, 0.44737)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 0.32673, 0)
 shape = SubResource("BoxShape3D_prop")
 
 [node name="Flammable" type="Node" parent="."]
-script = ExtResource("1_flammable")
-Profile = ExtResource("2_profile")
+script = ExtResource("2_flammable")
+Profile = ExtResource("3_profile")
 IsContraband = false

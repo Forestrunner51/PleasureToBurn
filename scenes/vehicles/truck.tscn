@@ -1,140 +1,105 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scenes/vehicles/Truck.cs" id="1_truck"]
 [ext_resource type="Script" path="res://scenes/vehicles/ChaseCamera.cs" id="2_camera"]
+[ext_resource type="PackedScene" path="res://assets/models/cars/firetruck.glb" id="3_model"]
+[ext_resource type="PackedScene" path="res://assets/models/cars/wheel-truck.glb" id="4_wheel"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_chassis"]
-size = Vector3(2.2, 1.0, 5.2)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red"]
-albedo_color = Color(0.75, 0.12, 0.1, 1)
-roughness = 0.5
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark"]
-albedo_color = Color(0.12, 0.12, 0.13, 1)
-roughness = 0.7
-
-[sub_resource type="BoxMesh" id="BoxMesh_bed"]
-material = SubResource("StandardMaterial3D_red")
-size = Vector3(2.2, 1.0, 5.2)
-
-[sub_resource type="BoxMesh" id="BoxMesh_cab"]
-material = SubResource("StandardMaterial3D_red")
-size = Vector3(2.0, 1.1, 1.8)
-
-[sub_resource type="BoxMesh" id="BoxMesh_tank"]
-material = SubResource("StandardMaterial3D_dark")
-size = Vector3(1.6, 0.9, 2.4)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_wheel"]
-material = SubResource("StandardMaterial3D_dark")
-top_radius = 0.45
-bottom_radius = 0.45
-height = 0.35
+size = Vector3(2.80, 1.6, 6.60)
 
 [node name="Truck" type="VehicleBody3D"]
 collision_layer = 2
 collision_mask = 2
 mass = 1800.0
 center_of_mass_mode = 1
-center_of_mass = Vector3(0, 0.2, 0)
+center_of_mass = Vector3(0, 0.3, 0)
 linear_damp = 0.6
 angular_damp = 2.0
 script = ExtResource("1_truck")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
 shape = SubResource("BoxShape3D_chassis")
 
-[node name="Bed" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
-mesh = SubResource("BoxMesh_bed")
-
-[node name="Cab" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.05, -1.5)
-mesh = SubResource("BoxMesh_cab")
-
-[node name="Tank" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.95, 0.9)
-mesh = SubResource("BoxMesh_tank")
+[node name="Model" parent="." instance=ExtResource("3_model")]
+transform = Transform3D(-2, 0, -0, 0, 2, 0, 0, 0, -2, 0, 0, 0)
 
 [node name="WheelFL" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05, 0.55, -1.7)
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -1.25, 0.85, -1.9)
 use_as_traction = true
 use_as_steering = true
-wheel_radius = 0.45
-wheel_rest_length = 0.3
+wheel_radius = 0.60
+wheel_rest_length = 0.25
 wheel_friction_slip = 3.0
 suspension_travel = 0.25
 suspension_stiffness = 45.0
 damping_compression = 0.9
 damping_relaxation = 1.1
 
-[node name="Mesh" type="MeshInstance3D" parent="WheelFL"]
-transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("CylinderMesh_wheel")
+[node name="Mesh" parent="WheelFL" instance=ExtResource("4_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="WheelFR" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 0.55, -1.7)
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 1.25, 0.85, -1.9)
 use_as_traction = true
 use_as_steering = true
-wheel_radius = 0.45
-wheel_rest_length = 0.3
+wheel_radius = 0.60
+wheel_rest_length = 0.25
 wheel_friction_slip = 3.0
 suspension_travel = 0.25
 suspension_stiffness = 45.0
 damping_compression = 0.9
 damping_relaxation = 1.1
 
-[node name="Mesh" type="MeshInstance3D" parent="WheelFR"]
-transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("CylinderMesh_wheel")
+[node name="Mesh" parent="WheelFR" instance=ExtResource("4_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="WheelRL" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.05, 0.55, 1.7)
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -1.25, 0.85, 1.3)
 use_as_traction = true
-wheel_radius = 0.45
-wheel_rest_length = 0.3
+wheel_radius = 0.60
+wheel_rest_length = 0.25
 wheel_friction_slip = 3.0
 suspension_travel = 0.25
 suspension_stiffness = 45.0
 damping_compression = 0.9
 damping_relaxation = 1.1
 
-[node name="Mesh" type="MeshInstance3D" parent="WheelRL"]
-transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("CylinderMesh_wheel")
+[node name="Mesh" parent="WheelRL" instance=ExtResource("4_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="WheelRR" type="VehicleWheel3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05, 0.55, 1.7)
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 1.25, 0.85, 1.3)
 use_as_traction = true
-wheel_radius = 0.45
-wheel_rest_length = 0.3
+wheel_radius = 0.60
+wheel_rest_length = 0.25
 wheel_friction_slip = 3.0
 suspension_travel = 0.25
 suspension_stiffness = 45.0
 damping_compression = 0.9
 damping_relaxation = 1.1
 
-[node name="Mesh" type="MeshInstance3D" parent="WheelRR"]
-transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("CylinderMesh_wheel")
+[node name="Mesh" parent="WheelRR" instance=ExtResource("4_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="ExitPoint" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4, 0.1, -1.2)
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -2.7, 0.1, -1.5)
 
 [node name="CabCamera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 2.35, -1.7)
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -0.55, 2.35, -2.2)
 fov = 80.0
 near = 0.05
 
 [node name="ChaseRig" type="Node3D" parent="."]
 top_level = true
 script = ExtResource("2_camera")
+Distance = 12.0
+Height = 4.5
 
 [node name="SpringArm3D" type="SpringArm3D" parent="ChaseRig"]
 collision_mask = 2
-spring_length = 9.0
+spring_length = 12.0
 margin = 0.3
 
 [node name="ChaseCamera" type="Camera3D" parent="ChaseRig/SpringArm3D"]

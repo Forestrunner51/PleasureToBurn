@@ -202,8 +202,10 @@ public partial class FireTests : Node3D
         await NextFrame();
         var wood = fire.All.Count(f => !f.IsContraband);
         var books = fire.All.Count(f => f.IsContraband);
-        Check(wood == 4, $"bookshelf has 4 wooden segments (back + 3 planks), got {wood}");
-        Check(books == 18, $"bookshelf holds 18 books, got {books}");
+        Check(wood == 1, $"bookshelf is one wooden body, got {wood}");
+        Check(books == 15, $"bookshelf holds 15 book stacks (3 shelves x 5), got {books}");
+        var shelfBody = fire.All.First(f => !f.IsContraband);
+        Check(shelfBody.Body.GetNodeOrNull("Model") is not null, "bookshelf uses the imported model");
         shelf.QueueFree();
         await NextFrame();
     }
@@ -212,26 +214,27 @@ public partial class FireTests : Node3D
     private async Task TestRoomTest(FireSystem fire)
     {
         fire.Reset();
-        var room = GD.Load<PackedScene>("res://scenes/locations/test_room.tscn").Instantiate<Location>();
-        AddChild(room);
+        var scene = GD.Load<PackedScene>("res://scenes/locations/test_room.tscn").Instantiate<Node3D>();
+        AddChild(scene);
         await NextFrame();
         await NextFrame();
-        Check(room.ContrabandTotal == 56, $"test room has 56 contraband items (3 shelves x 18 + 2 hidden), got {room.ContrabandTotal}");
+        var room = scene.GetNode<Location>("House");
+        Check(room.ContrabandTotal == 56, $"house has 56 contraband items (3x15 + 6 + 5 hidden), got {room.ContrabandTotal}");
         Check(fire.All.Count > room.ContrabandTotal, "furniture registers as flammable too");
-        Check(room.GetNodeOrNull<Player>("Player") is not null, "room contains the player");
+        Check(scene.GetNodeOrNull<Player>("Player") is not null, "room contains the player");
 
-        var vfx = room.GetNode<FireVfx>("FireVfx");
+        var vfx = scene.GetNode<FireVfx>("FireVfx");
         var book = room.GetNode<Flammable>("Props/HiddenBookUnderTable/Flammable");
         book.Ignite();
         await NextFrame();
-        Check(vfx.ActiveFlames == 1, "ignition attaches a flame effect");
+        Check(vfx.HasFlamesFor(book), "ignition attaches a flame effect to the book");
         Check(vfx.GetChildCount() >= 1, "ignition spawns a burst");
         await Wait(_paper.Fuel + 1f);
         Check(room.ContrabandBurned >= 1, "burning a hidden book counts toward the objective");
-        Check(vfx.ActiveFlames == 0, "charring removes the flame effect");
+        Check(!vfx.HasFlamesFor(book), "charring removes the book's flame effect");
         Check(room.GetNodeOrNull("Props/FuelCanByDoor") is FuelCan, "room has fuel cans");
 
-        room.QueueFree();
+        scene.QueueFree();
         await NextFrame();
     }
 

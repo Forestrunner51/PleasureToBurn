@@ -1,17 +1,10 @@
-[gd_scene load_steps=20 format=3]
+[gd_scene load_steps=7 format=3]
 
-[ext_resource type="Script" path="res://scenes/locations/Location.cs" id="1_location"]
+[ext_resource type="PackedScene" path="res://scenes/locations/house.tscn" id="1_house"]
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="2_player"]
-[ext_resource type="PackedScene" path="res://scenes/props/bookshelf.tscn" id="3_bookshelf"]
-[ext_resource type="PackedScene" path="res://scenes/props/table.tscn" id="4_table"]
-[ext_resource type="PackedScene" path="res://scenes/props/chair.tscn" id="5_chair"]
-[ext_resource type="PackedScene" path="res://scenes/props/rug.tscn" id="6_rug"]
-[ext_resource type="PackedScene" path="res://scenes/props/crate.tscn" id="7_crate"]
-[ext_resource type="PackedScene" path="res://scenes/props/book.tscn" id="8_book"]
-[ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="9_hud"]
-[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu/pause_menu.tscn" id="10_pause"]
-[ext_resource type="PackedScene" path="res://scenes/props/fuel_can.tscn" id="11_fuel_can"]
-[ext_resource type="Script" path="res://systems/fire/FireVfx.cs" id="12_fire_vfx"]
+[ext_resource type="Script" path="res://systems/fire/FireVfx.cs" id="3_vfx"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu/pause_menu.tscn" id="5_pause"]
 
 [sub_resource type="Environment" id="Environment_room"]
 background_mode = 1
@@ -21,30 +14,7 @@ ambient_light_color = Color(0.7, 0.62, 0.55, 1)
 ambient_light_energy = 0.4
 tonemap_mode = 2
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
-albedo_color = Color(0.22, 0.2, 0.18, 1)
-roughness = 0.95
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
-albedo_color = Color(0.5, 0.47, 0.42, 1)
-roughness = 0.9
-
-[sub_resource type="BoxMesh" id="BoxMesh_floor"]
-material = SubResource("StandardMaterial3D_floor")
-size = Vector3(10, 0.2, 10)
-
-[sub_resource type="BoxMesh" id="BoxMesh_wall"]
-material = SubResource("StandardMaterial3D_wall")
-size = Vector3(10, 3.2, 0.3)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
-size = Vector3(10, 0.2, 10)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_wall"]
-size = Vector3(10, 3.2, 0.3)
-
 [node name="TestRoom" type="Node3D"]
-script = ExtResource("1_location")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_room")
@@ -55,93 +25,14 @@ light_color = Color(1, 0.93, 0.82, 1)
 light_energy = 0.8
 shadow_enabled = true
 
-[node name="Room" type="Node3D" parent="."]
-
-[node name="Floor" type="MeshInstance3D" parent="Room"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
-mesh = SubResource("BoxMesh_floor")
-
-[node name="WallBack" type="MeshInstance3D" parent="Room"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -5)
-mesh = SubResource("BoxMesh_wall")
-
-[node name="WallFront" type="MeshInstance3D" parent="Room"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 5)
-mesh = SubResource("BoxMesh_wall")
-
-[node name="WallLeft" type="MeshInstance3D" parent="Room"]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5, 1.6, 0)
-mesh = SubResource("BoxMesh_wall")
-
-[node name="WallRight" type="MeshInstance3D" parent="Room"]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5, 1.6, 0)
-mesh = SubResource("BoxMesh_wall")
-
-[node name="Collision" type="StaticBody3D" parent="Room"]
-collision_layer = 2
-collision_mask = 0
-
-[node name="Floor" type="CollisionShape3D" parent="Room/Collision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
-shape = SubResource("BoxShape3D_floor")
-
-[node name="WallBack" type="CollisionShape3D" parent="Room/Collision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -5)
-shape = SubResource("BoxShape3D_wall")
-
-[node name="WallFront" type="CollisionShape3D" parent="Room/Collision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 5)
-shape = SubResource("BoxShape3D_wall")
-
-[node name="WallLeft" type="CollisionShape3D" parent="Room/Collision"]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5, 1.6, 0)
-shape = SubResource("BoxShape3D_wall")
-
-[node name="WallRight" type="CollisionShape3D" parent="Room/Collision"]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5, 1.6, 0)
-shape = SubResource("BoxShape3D_wall")
-
-[node name="Props" type="Node3D" parent="."]
-
-[node name="BookshelfLeft" parent="Props" instance=ExtResource("3_bookshelf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4, 0, -4.6)
-
-[node name="BookshelfRight" parent="Props" instance=ExtResource("3_bookshelf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.6)
-
-[node name="BookshelfSide" parent="Props" instance=ExtResource("3_bookshelf")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -4.6, 0, -1)
-
-[node name="Rug" parent="Props" instance=ExtResource("6_rug")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.7, 0.015, -3.2)
-
-[node name="Table" parent="Props" instance=ExtResource("4_table")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.75, -2.4)
-
-[node name="Chair" parent="Props" instance=ExtResource("5_chair")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.45, -1.5)
-
-[node name="Crate" parent="Props" instance=ExtResource("7_crate")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8, 0.3, 3.6)
-
-[node name="HiddenBookUnderTable" parent="Props" instance=ExtResource("8_book")]
-transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 2.2, 0.12, -2.4)
-
-[node name="HiddenBookBehindCrate" parent="Props" instance=ExtResource("8_book")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3, 0.12, 3.9)
-
-[node name="FuelCanByDoor" parent="Props" instance=ExtResource("11_fuel_can")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.8, 0, 3.8)
-
-[node name="FuelCanByTable" parent="Props" instance=ExtResource("11_fuel_can")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4, 0, -3.6)
+[node name="House" parent="." instance=ExtResource("1_house")]
 
 [node name="FireVfx" type="Node3D" parent="."]
-script = ExtResource("12_fire_vfx")
+script = ExtResource("3_vfx")
 
 [node name="Player" parent="." instance=ExtResource("2_player")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.1, 2.5)
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0.5, 0.1, 2.5)
 
-[node name="HUD" parent="." instance=ExtResource("9_hud")]
+[node name="HUD" parent="." instance=ExtResource("4_hud")]
 
-[node name="PauseMenu" parent="." instance=ExtResource("10_pause")]
+[node name="PauseMenu" parent="." instance=ExtResource("5_pause")]

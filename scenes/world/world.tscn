@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3]
+[gd_scene load_steps=89 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://scenes/vehicles/truck.tscn" id="2_truck"]
@@ -10,6 +10,113 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="8_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu/pause_menu.tscn" id="9_pause"]
 [ext_resource type="PackedScene" path="res://scenes/props/fuel_can.tscn" id="10_fuel_can"]
+
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-a.glb" id="city_a"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-b.glb" id="city_b"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-c.glb" id="city_c"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-d.glb" id="city_d"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-e.glb" id="city_e"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-f.glb" id="city_f"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-g.glb" id="city_g"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-h.glb" id="city_h"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-i.glb" id="city_i"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-j.glb" id="city_j"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-k.glb" id="city_k"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-l.glb" id="city_l"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-m.glb" id="city_m"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-n.glb" id="city_n"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-o.glb" id="city_o"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-p.glb" id="city_p"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-q.glb" id="city_q"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-r.glb" id="city_r"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-s.glb" id="city_s"]
+[ext_resource type="PackedScene" path="res://assets/models/city/building-type-t.glb" id="city_t"]
+[ext_resource type="PackedScene" path="res://assets/models/city/tree-large.glb" id="city_tree_large"]
+[ext_resource type="PackedScene" path="res://assets/models/city/tree-small.glb" id="city_tree_small"]
+[ext_resource type="PackedScene" path="res://assets/models/cars/sedan.glb" id="car_sedan"]
+[ext_resource type="PackedScene" path="res://assets/models/cars/van.glb" id="car_van"]
+[ext_resource type="PackedScene" path="res://assets/models/cars/taxi.glb" id="car_taxi"]
+[ext_resource type="PackedScene" path="res://assets/models/cars/suv.glb" id="car_suv"]
+[ext_resource type="PackedScene" path="res://assets/models/cars/police.glb" id="car_police"]
+[ext_resource type="PackedScene" path="res://assets/models/cars/wheel-default.glb" id="car_wheel"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_a"]
+size = Vector3(9.75, 6.25, 7.71)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_b"]
+size = Vector3(13.71, 8.53, 8.55)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_c"]
+size = Vector3(9.65, 7.75, 7.71)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_d"]
+size = Vector3(13.17, 9.28, 7.71)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_e"]
+size = Vector3(9.75, 8.53, 7.71)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_f"]
+size = Vector3(10.71, 8.53, 10.54)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_g"]
+size = Vector3(10.88, 5.76, 8.83)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_h"]
+size = Vector3(9.75, 5.53, 6.87)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_i"]
+size = Vector3(9.65, 5.53, 7.71)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_j"]
+size = Vector3(10.28, 7.78, 6.87)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_k"]
+size = Vector3(6.91, 8.62, 7.65)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_l"]
+size = Vector3(7.75, 7.87, 7.65)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_m"]
+size = Vector3(10.71, 5.53, 10.71)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_n"]
+size = Vector3(13.38, 8.53, 10.33)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_o"]
+size = Vector3(9.53, 8.53, 7.71)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_p"]
+size = Vector3(9.30, 6.88, 7.43)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_q"]
+size = Vector3(9.30, 6.88, 6.64)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_r"]
+size = Vector3(7.71, 8.56, 7.65)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_s"]
+size = Vector3(10.55, 8.53, 8.15)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_city_t"]
+size = Vector3(9.85, 8.67, 10.55)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_trunk"]
+size = Vector3(0.6, 4, 0.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_car_sedan"]
+size = Vector3(3.00, 2.08, 5.10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_car_van"]
+size = Vector3(3.00, 2.16, 5.50)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_car_taxi"]
+size = Vector3(3.00, 2.40, 5.50)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_car_suv"]
+size = Vector3(3.00, 2.08, 5.40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_car_police"]
+size = Vector3(3.00, 2.08, 6.20)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
 sky_top_color = Color(0.28, 0.32, 0.42, 1)
@@ -61,7 +168,6 @@ top_radius = 0.6
 bottom_radius = 0.6
 height = 40.0
 
-
 [sub_resource type="BoxMesh" id="BoxMesh_road_MainAvenue"]
 material = SubResource("StandardMaterial3D_road")
 size = Vector3(180, 0.04, 8)
@@ -77,76 +183,6 @@ size = Vector3(60, 0.04, 6)
 [sub_resource type="BoxMesh" id="BoxMesh_road_DepotApron"]
 material = SubResource("StandardMaterial3D_road")
 size = Vector3(30, 0.04, 20)
-
-[sub_resource type="BoxMesh" id="BoxMesh_block_0"]
-material = SubResource("StandardMaterial3D_building")
-size = Vector3(14, 9, 16)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_block_0"]
-size = Vector3(14, 9, 16)
-
-[sub_resource type="BoxMesh" id="BoxMesh_block_1"]
-material = SubResource("StandardMaterial3D_building")
-size = Vector3(10, 7, 12)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_block_1"]
-size = Vector3(10, 7, 12)
-
-[sub_resource type="BoxMesh" id="BoxMesh_block_2"]
-material = SubResource("StandardMaterial3D_building")
-size = Vector3(18, 11, 14)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_block_2"]
-size = Vector3(18, 11, 14)
-
-[sub_resource type="BoxMesh" id="BoxMesh_block_3"]
-material = SubResource("StandardMaterial3D_building")
-size = Vector3(16, 8, 20)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_block_3"]
-size = Vector3(16, 8, 20)
-
-[sub_resource type="BoxMesh" id="BoxMesh_block_4"]
-material = SubResource("StandardMaterial3D_building")
-size = Vector3(12, 10, 12)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_block_4"]
-size = Vector3(12, 10, 12)
-
-[sub_resource type="BoxMesh" id="BoxMesh_block_5"]
-material = SubResource("StandardMaterial3D_building")
-size = Vector3(14, 12, 18)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_block_5"]
-size = Vector3(14, 12, 18)
-
-[sub_resource type="BoxMesh" id="BoxMesh_block_6"]
-material = SubResource("StandardMaterial3D_building")
-size = Vector3(16, 9, 16)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_block_6"]
-size = Vector3(16, 9, 16)
-
-[sub_resource type="BoxMesh" id="BoxMesh_block_7"]
-material = SubResource("StandardMaterial3D_building")
-size = Vector3(20, 8, 12)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_block_7"]
-size = Vector3(20, 8, 12)
-
-[sub_resource type="BoxMesh" id="BoxMesh_block_8"]
-material = SubResource("StandardMaterial3D_building")
-size = Vector3(14, 10, 14)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_block_8"]
-size = Vector3(14, 10, 14)
-
-[sub_resource type="BoxMesh" id="BoxMesh_block_9"]
-material = SubResource("StandardMaterial3D_building")
-size = Vector3(12, 14, 12)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_block_9"]
-size = Vector3(12, 14, 12)
 
 [sub_resource type="BoxMesh" id="BoxMesh_depot_wall_side"]
 material = SubResource("StandardMaterial3D_depot")
@@ -228,114 +264,656 @@ mesh = SubResource("BoxMesh_road_DepotApron")
 [node name="Blocks" type="Node3D" parent="."]
 
 [node name="Block0" type="StaticBody3D" parent="Blocks"]
-transform = Transform3D(1.0, 0, 0.0, 0, 1, 0, -0.0, 0, 1.0, -40, 4.5, -45)
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -40, 0, -45)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Blocks/Block0"]
-mesh = SubResource("BoxMesh_block_0")
+[node name="Model" parent="Blocks/Block0" instance=ExtResource("city_a")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block0"]
-shape = SubResource("BoxShape3D_block_0")
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 3.12578, 0)
+shape = SubResource("BoxShape3D_city_a")
 
 [node name="Block1" type="StaticBody3D" parent="Blocks"]
-transform = Transform3D(1.0, 0, 0.0, 0, 1, 0, -0.0, 0, 1.0, -20, 3.5, -48)
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -20, 0, -48)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Blocks/Block1"]
-mesh = SubResource("BoxMesh_block_1")
+[node name="Model" parent="Blocks/Block1" instance=ExtResource("city_b")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block1"]
-shape = SubResource("BoxShape3D_block_1")
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 4.26563, 0)
+shape = SubResource("BoxShape3D_city_b")
 
 [node name="Block2" type="StaticBody3D" parent="Blocks"]
-transform = Transform3D(1.0, 0, 0.0, 0, 1, 0, -0.0, 0, 1.0, 30, 5.5, -46)
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 30, 0, -46)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Blocks/Block2"]
-mesh = SubResource("BoxMesh_block_2")
+[node name="Model" parent="Blocks/Block2" instance=ExtResource("city_c")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block2"]
-shape = SubResource("BoxShape3D_block_2")
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 3.87578, 0)
+shape = SubResource("BoxShape3D_city_c")
 
 [node name="Block3" type="StaticBody3D" parent="Blocks"]
-transform = Transform3D(1.0, 0, 0.0, 0, 1, 0, -0.0, 0, 1.0, 75, 4.0, -40)
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 75, 0, -40)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Blocks/Block3"]
-mesh = SubResource("BoxMesh_block_3")
+[node name="Model" parent="Blocks/Block3" instance=ExtResource("city_d")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block3"]
-shape = SubResource("BoxShape3D_block_3")
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 4.64063, 0)
+shape = SubResource("BoxShape3D_city_d")
 
 [node name="Block4" type="StaticBody3D" parent="Blocks"]
-transform = Transform3D(1.0, 0, 0.0, 0, 1, 0, -0.0, 0, 1.0, -70, 5.0, -10)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -70, 0, -10)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Blocks/Block4"]
-mesh = SubResource("BoxMesh_block_4")
+[node name="Model" parent="Blocks/Block4" instance=ExtResource("city_e")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block4"]
-shape = SubResource("BoxShape3D_block_4")
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 4.26563, 0)
+shape = SubResource("BoxShape3D_city_e")
 
 [node name="Block5" type="StaticBody3D" parent="Blocks"]
-transform = Transform3D(1.0, 0, 0.0, 0, 1, 0, -0.0, 0, 1.0, -70, 6.0, 40)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -70, 0, 40)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Blocks/Block5"]
-mesh = SubResource("BoxMesh_block_5")
+[node name="Model" parent="Blocks/Block5" instance=ExtResource("city_f")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block5"]
-shape = SubResource("BoxShape3D_block_5")
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 4.26563, 0)
+shape = SubResource("BoxShape3D_city_f")
 
 [node name="Block6" type="StaticBody3D" parent="Blocks"]
-transform = Transform3D(1.0, 0, 0.0, 0, 1, 0, -0.0, 0, 1.0, 80, 4.5, 45)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 80, 0, 45)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Blocks/Block6"]
-mesh = SubResource("BoxMesh_block_6")
+[node name="Model" parent="Blocks/Block6" instance=ExtResource("city_g")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block6"]
-shape = SubResource("BoxShape3D_block_6")
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2.88079, 0)
+shape = SubResource("BoxShape3D_city_g")
 
 [node name="Block7" type="StaticBody3D" parent="Blocks"]
-transform = Transform3D(1.0, 0, 0.0, 0, 1, 0, -0.0, 0, 1.0, 30, 4.0, 60)
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, 30, 0, 60)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Blocks/Block7"]
-mesh = SubResource("BoxMesh_block_7")
+[node name="Model" parent="Blocks/Block7" instance=ExtResource("city_h")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block7"]
-shape = SubResource("BoxShape3D_block_7")
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2.76562, 0)
+shape = SubResource("BoxShape3D_city_h")
 
 [node name="Block8" type="StaticBody3D" parent="Blocks"]
-transform = Transform3D(1.0, 0, 0.0, 0, 1, 0, -0.0, 0, 1.0, -30, 5.0, 60)
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, -30, 0, 60)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Blocks/Block8"]
-mesh = SubResource("BoxMesh_block_8")
+[node name="Model" parent="Blocks/Block8" instance=ExtResource("city_i")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block8"]
-shape = SubResource("BoxShape3D_block_8")
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2.76562, 0)
+shape = SubResource("BoxShape3D_city_i")
 
 [node name="Block9" type="StaticBody3D" parent="Blocks"]
-transform = Transform3D(1.0, 0, 0.0, 0, 1, 0, -0.0, 0, 1.0, 85, 7.0, 5)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 85, 0, 5)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Mesh" type="MeshInstance3D" parent="Blocks/Block9"]
-mesh = SubResource("BoxMesh_block_9")
+[node name="Model" parent="Blocks/Block9" instance=ExtResource("city_j")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block9"]
-shape = SubResource("BoxShape3D_block_9")
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 3.89063, 0)
+shape = SubResource("BoxShape3D_city_j")
+
+[node name="Block10" type="StaticBody3D" parent="Blocks"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -20, 0, -70)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Blocks/Block10" instance=ExtResource("city_k")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block10"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 4.31099, 0)
+shape = SubResource("BoxShape3D_city_k")
+
+[node name="Block11" type="StaticBody3D" parent="Blocks"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 10, 0, -72)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Blocks/Block11" instance=ExtResource("city_l")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block11"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 3.93448, 0)
+shape = SubResource("BoxShape3D_city_l")
+
+[node name="Block12" type="StaticBody3D" parent="Blocks"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 50, 0, -70)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Blocks/Block12" instance=ExtResource("city_m")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block12"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2.76562, 0)
+shape = SubResource("BoxShape3D_city_m")
+
+[node name="Block13" type="StaticBody3D" parent="Blocks"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -85, 0, -45)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Blocks/Block13" instance=ExtResource("city_n")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block13"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 4.26563, 0)
+shape = SubResource("BoxShape3D_city_n")
+
+[node name="Block14" type="StaticBody3D" parent="Blocks"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -85, 0, 65)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Blocks/Block14" instance=ExtResource("city_o")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block14"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 4.26563, 0)
+shape = SubResource("BoxShape3D_city_o")
+
+[node name="Block15" type="StaticBody3D" parent="Blocks"]
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, 60, 0, 80)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Blocks/Block15" instance=ExtResource("city_p")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block15"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 3.4425, 0)
+shape = SubResource("BoxShape3D_city_p")
+
+[node name="Block16" type="StaticBody3D" parent="Blocks"]
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, -5, 0, 80)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Blocks/Block16" instance=ExtResource("city_q")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block16"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 3.4425, 0)
+shape = SubResource("BoxShape3D_city_q")
+
+[node name="Block17" type="StaticBody3D" parent="Blocks"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 90, 0, -70)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Blocks/Block17" instance=ExtResource("city_r")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block17"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 4.27929, 0)
+shape = SubResource("BoxShape3D_city_r")
+
+[node name="Block18" type="StaticBody3D" parent="Blocks"]
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, -60, 0, 82)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Blocks/Block18" instance=ExtResource("city_s")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block18"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 4.26563, 0)
+shape = SubResource("BoxShape3D_city_s")
+
+[node name="Block19" type="StaticBody3D" parent="Blocks"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 95, 0, 70)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Blocks/Block19" instance=ExtResource("city_t")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block19"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 4.33624, 0)
+shape = SubResource("BoxShape3D_city_t")
+
+[node name="Trees" type="Node3D" parent="."]
+
+[node name="Tree0" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -52, 0, -38)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree0" instance=ExtResource("city_tree_large")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree0"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree1" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(0.79864, 0, -0.60182, 0, 1, 0, 0.60182, 0, 0.79864, -38, 0, -52)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree1" instance=ExtResource("city_tree_small")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree1"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree2" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(0.27564, 0, -0.96126, 0, 1, 0, 0.96126, 0, 0.27564, 48, 0, -38)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree2" instance=ExtResource("city_tree_large")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree2"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree3" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.35837, 0, -0.93358, 0, 1, 0, 0.93358, 0, -0.35837, 62, 0, -52)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree3" instance=ExtResource("city_tree_small")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree3"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree4" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.84805, 0, -0.52992, 0, 1, 0, 0.52992, 0, -0.84805, -52, 0, 50)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree4" instance=ExtResource("city_tree_small")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree4"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree5" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.99619, 0, 0.08716, 0, 1, 0, -0.08716, 0, -0.99619, -38, 0, 38)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree5" instance=ExtResource("city_tree_large")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree5"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree6" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.74314, 0, 0.66913, 0, 1, 0, -0.66913, 0, -0.74314, 67, 0, 44)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree6" instance=ExtResource("city_tree_large")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree6"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree7" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.19081, 0, 0.98163, 0, 1, 0, -0.98163, 0, -0.19081, 53, 0, 58)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree7" instance=ExtResource("city_tree_small")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree7"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree8" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(0.43837, 0, 0.89879, 0, 1, 0, -0.89879, 0, 0.43837, -15, 0, -20)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree8" instance=ExtResource("city_tree_large")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree8"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree9" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(0.89101, 0, 0.45399, 0, 1, 0, -0.45399, 0, 0.89101, 15, 0, -20)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree9" instance=ExtResource("city_tree_small")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree9"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree10" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(0.98481, 0, -0.17365, 0, 1, 0, 0.17365, 0, 0.98481, -15, 0, 35)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree10" instance=ExtResource("city_tree_small")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree10"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree11" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(0.682, 0, -0.73135, 0, 1, 0, 0.73135, 0, 0.682, 15, 0, 35)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree11" instance=ExtResource("city_tree_large")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree11"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree12" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(0.10453, 0, -0.99452, 0, 1, 0, 0.99452, 0, 0.10453, -60, 0, 10)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree12" instance=ExtResource("city_tree_large")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree12"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree13" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.51504, 0, -0.85717, 0, 1, 0, 0.85717, 0, -0.51504, 70, 0, -10)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree13" instance=ExtResource("city_tree_small")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree13"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree14" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.92718, 0, -0.37461, 0, 1, 0, 0.37461, 0, -0.92718, 20, 0, -58)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree14" instance=ExtResource("city_tree_small")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree14"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="Tree15" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.96593, 0, 0.25882, 0, 1, 0, -0.25882, 0, -0.96593, -25, 0, 10)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/Tree15" instance=ExtResource("city_tree_small")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree15"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="SiteTree_LarkspurLane_0" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.91355, 0, -0.40674, 0, 1, 0, 0.40674, 0, -0.91355, -52.5, 0, -39)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/SiteTree_LarkspurLane_0" instance=ExtResource("city_tree_large")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/SiteTree_LarkspurLane_0"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="SiteTree_LarkspurLane_1" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.40674, 0, 0.91355, 0, 1, 0, -0.91355, 0, -0.40674, -37.5, 0, -51)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/SiteTree_LarkspurLane_1" instance=ExtResource("city_tree_small")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/SiteTree_LarkspurLane_1"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="SiteTree_TallowCourt_0" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.79864, 0, -0.60182, 0, 1, 0, 0.60182, 0, -0.79864, 47.5, 0, -39)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/SiteTree_TallowCourt_0" instance=ExtResource("city_tree_large")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/SiteTree_TallowCourt_0"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="SiteTree_TallowCourt_1" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.60182, 0, 0.79864, 0, 1, 0, -0.79864, 0, -0.60182, 62.5, 0, -51)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/SiteTree_TallowCourt_1" instance=ExtResource("city_tree_small")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/SiteTree_TallowCourt_1"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="SiteTree_AshgroveRoad_0" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.91355, 0, -0.40674, 0, 1, 0, 0.40674, 0, -0.91355, -52.5, 0, 50)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/SiteTree_AshgroveRoad_0" instance=ExtResource("city_tree_large")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/SiteTree_AshgroveRoad_0"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="SiteTree_AshgroveRoad_1" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.40674, 0, 0.91355, 0, 1, 0, -0.91355, 0, -0.40674, -37.5, 0, 38)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/SiteTree_AshgroveRoad_1" instance=ExtResource("city_tree_small")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/SiteTree_AshgroveRoad_1"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="SiteTree_MillerTerrace_0" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.98163, 0, -0.19081, 0, 1, 0, 0.19081, 0, -0.98163, 52.5, 0, 56)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/SiteTree_MillerTerrace_0" instance=ExtResource("city_tree_large")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/SiteTree_MillerTerrace_0"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="SiteTree_MillerTerrace_1" type="StaticBody3D" parent="Trees"]
+transform = Transform3D(-0.19081, 0, 0.98163, 0, 1, 0, -0.98163, 0, -0.19081, 67.5, 0, 44)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="Trees/SiteTree_MillerTerrace_1" instance=ExtResource("city_tree_small")]
+transform = Transform3D(7.5, 0, -0, 0, 7.5, 0, 0, 0, 7.5, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/SiteTree_MillerTerrace_1"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_trunk")
+
+[node name="ParkedCars" type="Node3D" parent="."]
+
+[node name="Car0" type="StaticBody3D" parent="ParkedCars"]
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, -30, 0.6, -24)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="ParkedCars/Car0" instance=ExtResource("car_sedan")]
+transform = Transform3D(-2, 0, -0, 0, 2, 0, 0, 0, -2, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ParkedCars/Car0"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 1.04, 0)
+shape = SubResource("BoxShape3D_car_sedan")
+
+[node name="Wheel01" parent="ParkedCars/Car0" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, -1.24, 0, 1.4)
+
+[node name="Wheel11" parent="ParkedCars/Car0" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 1.24, 0, 1.4)
+
+[node name="Wheel00" parent="ParkedCars/Car0" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, -1.24, 0, -1.4)
+
+[node name="Wheel10" parent="ParkedCars/Car0" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 1.24, 0, -1.4)
+
+[node name="Car1" type="StaticBody3D" parent="ParkedCars"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 25, 0.6, -24)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="ParkedCars/Car1" instance=ExtResource("car_van")]
+transform = Transform3D(-2, 0, -0, 0, 2, 0, 0, 0, -2, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ParkedCars/Car1"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 1.08, 0)
+shape = SubResource("BoxShape3D_car_van")
+
+[node name="Wheel01" parent="ParkedCars/Car1" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, -1.24, 0, 1.4)
+
+[node name="Wheel11" parent="ParkedCars/Car1" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 1.24, 0, 1.4)
+
+[node name="Wheel00" parent="ParkedCars/Car1" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, -1.24, 0, -1.4)
+
+[node name="Wheel10" parent="ParkedCars/Car1" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 1.24, 0, -1.4)
+
+[node name="Car2" type="StaticBody3D" parent="ParkedCars"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -8, 0.6, 26)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="ParkedCars/Car2" instance=ExtResource("car_taxi")]
+transform = Transform3D(-2, 0, -0, 0, 2, 0, 0, 0, -2, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ParkedCars/Car2"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("BoxShape3D_car_taxi")
+
+[node name="Wheel01" parent="ParkedCars/Car2" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, -1.24, 0, 1.4)
+
+[node name="Wheel11" parent="ParkedCars/Car2" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 1.24, 0, 1.4)
+
+[node name="Wheel00" parent="ParkedCars/Car2" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, -1.24, 0, -1.4)
+
+[node name="Wheel10" parent="ParkedCars/Car2" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 1.24, 0, -1.4)
+
+[node name="Car3" type="StaticBody3D" parent="ParkedCars"]
+transform = Transform3D(-1, 0, -0, 0, 1, 0, 0, 0, -1, 60, 0.6, 14)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="ParkedCars/Car3" instance=ExtResource("car_suv")]
+transform = Transform3D(-2, 0, -0, 0, 2, 0, 0, 0, -2, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ParkedCars/Car3"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 1.04, 0)
+shape = SubResource("BoxShape3D_car_suv")
+
+[node name="Wheel01" parent="ParkedCars/Car3" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, -1.24, 0, 1.4)
+
+[node name="Wheel11" parent="ParkedCars/Car3" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 1.24, 0, 1.4)
+
+[node name="Wheel00" parent="ParkedCars/Car3" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, -1.24, 0, -1.4)
+
+[node name="Wheel10" parent="ParkedCars/Car3" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 1.24, 0, -1.4)
+
+[node name="Car4" type="StaticBody3D" parent="ParkedCars"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 12, 0.6, -36)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Model" parent="ParkedCars/Car4" instance=ExtResource("car_police")]
+transform = Transform3D(-2, 0, -0, 0, 2, 0, 0, 0, -2, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ParkedCars/Car4"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 0, 1.04, 0)
+shape = SubResource("BoxShape3D_car_police")
+
+[node name="Wheel01" parent="ParkedCars/Car4" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, -1.24, 0, 1.4)
+
+[node name="Wheel11" parent="ParkedCars/Car4" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 1.24, 0, 1.4)
+
+[node name="Wheel00" parent="ParkedCars/Car4" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, -1.24, 0, -1.4)
+
+[node name="Wheel10" parent="ParkedCars/Car4" instance=ExtResource("car_wheel")]
+transform = Transform3D(2, 0, -0, 0, 2, 0, 0, 0, 2, 1.24, 0, -1.4)
 
 [node name="Depot" type="Node3D" parent="."]
 transform = Transform3D(1.0, 0, 0.0, 0, 1, 0, -0.0, 0, 1.0, 0, 0, 0)

@@ -15,6 +15,7 @@ public partial class FireVfx : Node3D
     [Export] public PackedScene BurningFlames { get; set; } = GD.Load<PackedScene>("res://scenes/vfx/burning_flames.tscn");
 
     public int ActiveFlames => _flames.Count;
+    public bool HasFlamesFor(Flammable flammable) => _flames.ContainsKey(flammable);
 
     private readonly Dictionary<Flammable, Node3D> _flames = new();
 
@@ -37,7 +38,8 @@ public partial class FireVfx : Node3D
     public override void _Process(double delta)
     {
         foreach (var (flammable, flames) in _flames)
-            flames.Scale = Vector3.One * Mathf.Lerp(0.3f, 1f, flammable.Intensity);
+            if (IsInstanceValid(flames))
+                flames.Scale = Vector3.One * Mathf.Lerp(0.3f, 1f, flammable.Intensity);
     }
 
     private void OnIgnited(Flammable flammable)
@@ -52,6 +54,8 @@ public partial class FireVfx : Node3D
         var flames = BurningFlames.Instantiate<Node3D>();
         flammable.Body.AddChild(flames);
         _flames[flammable] = flames;
+        // A burning object can be freed mid-fire (a building being respawned); its emitter goes with it.
+        flammable.Body.TreeExiting += () => _flames.Remove(flammable);
     }
 
     private void OnCharred(Flammable flammable)
