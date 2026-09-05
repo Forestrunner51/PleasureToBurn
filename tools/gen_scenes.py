@@ -260,8 +260,9 @@ truck_ext = [
     '[ext_resource type="PackedScene" path="res://assets/models/cars/wheel-truck.glb" id="4_wheel"]',
 ]
 truck_sub = [f'[sub_resource type="BoxShape3D" id="BoxShape3D_chassis"]\nsize = Vector3({tsize[0]-0.2:.2f}, 1.6, {tsize[2]-0.2:.2f})']
-# Kenney vehicles face +Z; Godot forward is -Z, so the model is turned 180 degrees.
-front_z, rear_z = -0.95*V, 0.65*V
+# VehicleBody3D drives toward +Z on positive engine_force, and Kenney vehicles also face +Z, so the model
+# is left unrotated. The truck's nose is +Z (unlike the player, whose forward is -Z).
+front_z, rear_z = 0.95*V, -0.65*V
 write(f"{P}/scenes/vehicles/truck.tscn", header(truck_ext, truck_sub) + f'''
 [node name="Truck" type="VehicleBody3D"]
 collision_layer = 2
@@ -278,14 +279,14 @@ transform = {T(0, 1.3, 0)}
 shape = SubResource("BoxShape3D_chassis")
 
 [node name="Model" parent="." instance=ExtResource("3_model")]
-transform = {T(0, 0, 0, 180, V)}
+transform = {T(0, 0, 0, 0, V)}
 ''' + wheel("WheelFL", -1.25, front_z, True) + wheel("WheelFR", 1.25, front_z, True)
   + wheel("WheelRL", -1.25, rear_z, False) + wheel("WheelRR", 1.25, rear_z, False) + f'''
 [node name="ExitPoint" type="Marker3D" parent="."]
-transform = {T(-2.7, 0.1, -1.5)}
+transform = {T(-2.7, 0.1, 1.5)}
 
 [node name="CabCamera" type="Camera3D" parent="."]
-transform = {T(-0.55, 2.35, -2.2)}
+transform = {T(-0.55, 2.35, 2.2, 180)}
 fov = 80.0
 near = 0.05
 

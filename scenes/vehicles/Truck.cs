@@ -18,8 +18,9 @@ namespace PleasureToBurn;
 ///       └── SpringArm3D → ChaseCamera (Camera3D)   ← arm shortens when something is behind the truck
 ///
 /// TUNE BY EYE: EnginePower, MaxSteerDegrees, wheel suspension values in the scene, mass, centre of mass.
-/// Godot 4.x note: VehicleBody3D uses engine_force/brake/steering; there is no gearbox, so top speed comes
-/// from drag (linear_damp) fighting engine force.
+/// Godot 4.x notes: VehicleBody3D uses engine_force/brake/steering; there is no gearbox, so top speed comes
+/// from drag (linear_damp) fighting engine force. Positive engine_force drives toward the body's +Z, the
+/// opposite of Godot's usual -Z forward, so the truck's nose is +Z and the model is not rotated.
 /// </summary>
 public partial class Truck : VehicleBody3D, IInteractable
 {
@@ -77,8 +78,8 @@ public partial class Truck : VehicleBody3D, IInteractable
         Brake = BrakeForce;
 
         player.GlobalPosition = _exitPoint.GlobalPosition;
-        // Face the same way as the truck so the player is not disoriented.
-        var forward = -GlobalBasis.Z with { Y = 0 };
+        // Face the same way as the truck (nose is +Z) so the player is not disoriented.
+        var forward = GlobalBasis.Z with { Y = 0 };
         if (forward.LengthSquared() > 0.001f)
             player.LookAt(player.GlobalPosition + forward.Normalized(), Vector3.Up);
         player.SetControlEnabled(true);

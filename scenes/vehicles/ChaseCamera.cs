@@ -17,6 +17,8 @@ public partial class ChaseCamera : Node3D
     /// <summary>Degrees the camera looks down at the vehicle.</summary>
     [Export] public float PitchDegrees { get; set; } = 14f;
     [Export] public float Smoothing { get; set; } = 6f;
+    /// <summary>VehicleBody3D drives toward +Z, so vehicle models face +Z. Untick for a -Z-facing target.</summary>
+    [Export] public bool TargetFacesPlusZ { get; set; } = true;
 
     private Node3D _target = null!;
     private SpringArm3D _arm = null!;
@@ -48,7 +50,7 @@ public partial class ChaseCamera : Node3D
     /// <summary>Pivot sits above the vehicle facing its forward direction; the arm extends backwards from it.</summary>
     private Transform3D DesiredTransform()
     {
-        var forward = -_target.GlobalBasis.Z with { Y = 0 };
+        var forward = (TargetFacesPlusZ ? _target.GlobalBasis.Z : -_target.GlobalBasis.Z) with { Y = 0 };
         forward = forward.LengthSquared() > 0.001f ? forward.Normalized() : Vector3.Forward;
         var origin = _target.GlobalPosition + Vector3.Up * Height;
         var basis = Basis.LookingAt(forward, Vector3.Up).Rotated(forward.Cross(Vector3.Up).Normalized() * -1f, Mathf.DegToRad(PitchDegrees));
