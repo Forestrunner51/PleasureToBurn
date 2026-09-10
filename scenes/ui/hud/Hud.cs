@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>Prototype overlay. Purely reactive: listens to EventBus / FireSystem, never touches gameplay nodes.</summary>
 public partial class Hud : CanvasLayer

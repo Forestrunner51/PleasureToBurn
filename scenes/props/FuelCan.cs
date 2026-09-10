@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// One-shot refill for the flamethrower. Fuel is the location's economy: the player must let fire

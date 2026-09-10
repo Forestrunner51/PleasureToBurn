@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// A lot in the world where a building scene is spawned. Respawn() gives a fresh copy of the building

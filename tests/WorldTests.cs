@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn.Tests;
+namespace Alexandria.Tests;
 
 /// <summary>
 /// Headless tests for the world: sites, the contract loop, and the truck hand-off. Run with:
@@ -129,6 +129,30 @@ public partial class WorldTests : Node3D
         Check(GetTree().GetFirstNodeInGroup(InvoicePanel.Group) is InvoicePanel, "invoice panel present");
         Check(GetTree().GetFirstNodeInGroup(DayEndPanel.Group) is DayEndPanel, "day-end panel present");
 
+        // People. The officer briefs you at the depot; the house has a resident who does not leave.
+        var officer = world.GetNode<Npc>("Depot/WatchOfficer");
+        officer.PickConversation(0);
+        Check(officer.Prompt.Contains("Watch Officer Pell"), "the watch officer offers a conversation");
+
+        var dialogue = GetTree().GetFirstNodeInGroup(DialoguePanel.Group) as DialoguePanel;
+        Check(dialogue is not null, "dialogue panel present");
+        officer.Interact(player);
+        Check(dialogue!.Visible && dialogue.LineIndex == 0, "talking opens the panel on the first line");
+        Check(dialogue.SpeakerName == "Watch Officer Pell", "the panel names the speaker");
+        Check(dialogue.CurrentLine.Length > 0, "the first line has text");
+        var spoken = dialogue.LineCount;
+        for (var i = 1; i < spoken; i++)
+            dialogue.Advance();
+        Check(dialogue.Visible && dialogue.LineIndex == spoken - 1, $"the conversation walks its {spoken} lines");
+        dialogue.Advance();
+        Check(!dialogue.Visible && !GetTree().Paused, "the last line closes the panel and unpauses");
+        Check(officer.HasSpoken, "the officer remembers being spoken to");
+
+        var occupant = manager.TargetLocation!.GetNodeOrNull<Npc>("People/Occupant");
+        Check(occupant is not null, "the house has a resident");
+        Check(occupant!.Current is { IsEmpty: false }, "the resident has something to say");
+        Check(occupant.GetNodeOrNull<Flammable>("Flammable") is null, "the resident is not part of the fire simulation");
+
         career.Reset();
         DirAccess.RemoveAbsolute(ProjectSettings.GlobalizePath("user://test_career.cfg"));
 
@@ -143,6 +167,23 @@ public partial class WorldTests : Node3D
         Check(!truck.IsDriving && player.Visible, "player exits the truck");
         Check(player.Camera.Current, "player camera is current again");
         Check(player.GlobalPosition.DistanceTo(truck.GlobalPosition) < 4f, "player stands next to the truck");
+
+        // The depot's only opening is +Z and a VehicleBody3D drives toward its own +Z, so a truck parked
+        // facing the wrong way drives into the back wall on the player's very first input.
+        var depotDoorway = 7f;
+        var startZ = truck.GlobalPosition.Z;
+        truck.Interact(player);
+        truck.SetPhysicsProcess(false); // drive it directly instead of through the input map
+        for (var i = 0; i < 240; i++)
+        {
+            truck.Drive(1f, 0f, false, (float)GetPhysicsProcessDeltaTime());
+            await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
+        }
+        truck.SetPhysicsProcess(true);
+        var travelled = truck.GlobalPosition.Z - startZ;
+        Check(travelled > 2f, $"holding forward drives the truck out of the depot (moved {travelled:0.0} m on +Z)");
+        Check(truck.GlobalPosition.Z > depotDoorway, "the truck clears the depot doorway rather than hitting the back wall");
+        truck.Exit();
 
         world.QueueFree();
         await NextFrame();

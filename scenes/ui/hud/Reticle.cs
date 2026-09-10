@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// Crosshair that doubles as a heat gauge for whatever the player is aiming at:

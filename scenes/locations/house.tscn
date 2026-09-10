@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3]
+[gd_scene load_steps=35 format=3]
 
 [ext_resource type="Script" path="res://scenes/locations/Location.cs" id="1_location"]
 [ext_resource type="PackedScene" path="res://assets/models/furniture/floorFull.glb" id="t_floorFull"]
@@ -22,6 +22,12 @@
 [ext_resource type="PackedScene" path="res://scenes/props/crate_open.tscn" id="p_crate_open"]
 [ext_resource type="PackedScene" path="res://scenes/props/book.tscn" id="p_book"]
 [ext_resource type="PackedScene" path="res://scenes/props/fuel_can.tscn" id="p_fuel_can"]
+[ext_resource type="PackedScene" path="res://scenes/npc/npc.tscn" id="p_npc"]
+[ext_resource type="Script" path="res://resources/dialogue/DialogueSet.cs" id="dlg_script"]
+[ext_resource type="Resource" path="res://resources/dialogue/occupant_teacher.tres" id="d_occupant_teacher"]
+[ext_resource type="Resource" path="res://resources/dialogue/occupant_denial.tres" id="d_occupant_denial"]
+[ext_resource type="Resource" path="res://resources/dialogue/occupant_quiet.tres" id="d_occupant_quiet"]
+[ext_resource type="Resource" path="res://resources/dialogue/occupant_watcher.tres" id="d_occupant_watcher"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_roof"]
 albedo_color = Color(0.3, 0.2, 0.18, 1)
@@ -297,3 +303,10 @@ transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, 1.6, 0.1, 4.4)
 
 [node name="FuelCanCorner" parent="Props" instance=ExtResource("p_fuel_can")]
 transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -4.5, 0.1, -4.5)
+
+[node name="People" type="Node3D" parent="."]
+
+[node name="Occupant" parent="People" instance=ExtResource("p_npc")]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -2.6, 0.1, 1.2)
+DisplayName = "Resident"
+Conversations = Array[ExtResource("dlg_script")]([ExtResource("d_occupant_teacher"), ExtResource("d_occupant_denial"), ExtResource("d_occupant_quiet"), ExtResource("d_occupant_watcher")])

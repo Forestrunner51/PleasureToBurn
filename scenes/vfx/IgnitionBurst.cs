@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// One-shot "it caught" feedback: particle pop, light pulse, whoomp. Frees itself.

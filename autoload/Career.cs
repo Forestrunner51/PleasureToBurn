@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// Everything that survives between days and scene reloads: money, day number, reputation, upgrade levels.

@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// How a kind of material burns. Shared by every Flammable that uses it, so tune once per material

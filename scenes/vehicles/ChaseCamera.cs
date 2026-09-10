@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// Third-person rig that trails a vehicle. The rig is TopLevel so the vehicle's roll and pitch do not

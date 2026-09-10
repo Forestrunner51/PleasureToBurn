@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// One purchasable upgrade line. The effect of each Id is applied in Career.EffectiveStats /

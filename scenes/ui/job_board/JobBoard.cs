@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>Dispatch's job board: three offers, pick one. Content is built in code from JobOffers.</summary>
 public partial class JobBoard : ModalPanel

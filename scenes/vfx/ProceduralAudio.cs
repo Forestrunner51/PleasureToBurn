@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// Placeholder sounds generated in code so the prototype has audio feedback without assets.

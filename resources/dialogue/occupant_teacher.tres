@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="DialogueSet" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/dialogue/DialogueSet.cs" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+Speaker = "Retired Teacher"
+Lines = PackedStringArray("You are early. I put the kettle on anyway.", "They are on the shelf by the window. I did not hide any. You are welcome to check.", "Thirty-one years I taught. I know how this goes.", "Do what you came for. I would rather it was someone who knocked.")

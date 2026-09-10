@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>Owns pause state and mouse capture while open. Restart reloads the current scene.</summary>
 public partial class PauseMenu : CanvasLayer

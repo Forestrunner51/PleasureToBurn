@@ -1,0 +1,74 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scenes/npc/Npc.cs" id="1_npc"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_coat"]
+albedo_color = Color(0.33, 0.31, 0.28, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trousers"]
+albedo_color = Color(0.17, 0.18, 0.21, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_skin"]
+albedo_color = Color(0.79, 0.63, 0.52, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_legs"]
+material = SubResource("StandardMaterial3D_trousers")
+size = Vector3(0.46, 0.85, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_torso"]
+material = SubResource("StandardMaterial3D_coat")
+size = Vector3(0.56, 0.72, 0.32)
+
+[sub_resource type="BoxMesh" id="BoxMesh_arm"]
+material = SubResource("StandardMaterial3D_coat")
+size = Vector3(0.13, 0.62, 0.16)
+
+[sub_resource type="BoxMesh" id="BoxMesh_head"]
+material = SubResource("StandardMaterial3D_skin")
+size = Vector3(0.34, 0.36, 0.32)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hair"]
+material = SubResource("StandardMaterial3D_trousers")
+size = Vector3(0.36, 0.1, 0.34)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
+radius = 0.3
+height = 1.74
+
+[node name="Npc" type="StaticBody3D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1_npc")
+DisplayName = "Resident"
+PromptVerb = "Talk to"
+
+[node name="Legs" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.425, 0)
+mesh = SubResource("BoxMesh_legs")
+
+[node name="Torso" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.21, 0)
+mesh = SubResource("BoxMesh_torso")
+
+[node name="ArmLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.35, 1.16, 0)
+mesh = SubResource("BoxMesh_arm")
+
+[node name="ArmRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 1.16, 0)
+mesh = SubResource("BoxMesh_arm")
+
+[node name="Head" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
+mesh = SubResource("BoxMesh_head")
+
+[node name="Hair" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.95, 0)
+mesh = SubResource("BoxMesh_hair")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.87, 0)
+shape = SubResource("CapsuleShape3D_body")

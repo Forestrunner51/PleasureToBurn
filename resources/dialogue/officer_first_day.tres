@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="DialogueSet" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/dialogue/DialogueSet.cs" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+Speaker = "Watch Officer Pell"
+Lines = PackedStringArray("Morning. You are on the board today. Take a report, drive out, clear the address, come back.", "Anything with pages goes. Shelves, boxes, under the mattress. Your visor keeps the count.", "You will see it move in the fire. Everyone does, first week. That is convection. Write it down as convection.", "Department line is simple. It lives on what is written down. Burn enough and there is nothing left for it to be.", "So we burn. Every day. Until the counter reaches zero. That is the job and that is the whole of it.", "Fuel is on the pump. Truck is yours. Try not to catch.")

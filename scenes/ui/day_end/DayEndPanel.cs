@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>End-of-day summary and the upgrade shop. "Start next day" advances the calendar.</summary>
 public partial class DayEndPanel : ModalPanel

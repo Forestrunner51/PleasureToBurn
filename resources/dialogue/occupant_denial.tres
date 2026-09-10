@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="DialogueSet" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/dialogue/DialogueSet.cs" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+Speaker = "Resident"
+Lines = PackedStringArray("There has been a mistake. We do not keep anything like that in this house.", "My wife reads the notices. That is all. The notices.", "...There is a box under the stairs. It is not mine.", "Just do not write that it was in the house. Say it was the shed.")

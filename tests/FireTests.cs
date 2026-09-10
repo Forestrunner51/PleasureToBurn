@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn.Tests;
+namespace Alexandria.Tests;
 
 /// <summary>
 /// Headless tests for the fire system and flamethrower. Run with:

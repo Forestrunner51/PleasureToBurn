@@ -1,4 +1,4 @@
-# Project Notes — Pleasure to Burn
+# Project Notes — Alexandria
 
 Living document for structure, naming and conventions. Update it when a convention changes.
 Engine: **Godot 4.8 .NET**, C# 12, `net8.0`. Godot.NET.Sdk `4.8.0-dev.3` (pinned in the csproj; bump together with the editor).
@@ -14,6 +14,63 @@ per-object flames), segmented bookshelves with upward spread bias, scarce fuel (
 Slice 3 added the core loop end to end: an outdoor world with a depot, a drivable truck, four enterable houses on
 sites, and a dispatch contract loop (take report → drive → burn → return → get paid). Startup scene is now
 `scenes/world/world.tscn`; `scenes/locations/test_room.tscn` stays as the fast fire-tuning scene.
+
+Slice 5 renamed the project to **Alexandria** and added people. The premise settled: the fire is not fire. It
+feeds on what is written down and grows cleverer with every book burned, and the department's line that burning
+enough of them will kill it is a lie the player is meant to work out. The bureaucracy stays exactly as it is,
+because the invoices and the star ratings are the machine that keeps the player from noticing.
+
+Slice 4 built the neighbourhood, after a playtest found the game boring and pointless: no world, no framing, no
+onboarding. This slice is the world half of that. The premise settled here too — a mundane municipal day job you
+cannot get out of — so the streets are a repeating grid and the same few house types recur down every road. What
+is still missing, and matters more: a scripted opening, occupants, and a reason to care. See "Next slices".
+
+## People and dialogue
+
+- `Npc` (`scenes/npc/npc.tscn`) is a `StaticBody3D` on layer 2 implementing `IInteractable`, so the existing aim
+  ray and interact action find it with no new plumbing. It does not move, does not follow and has no face.
+- **Occupants are deliberately not `Flammable`.** They stand in the room you came to burn and talk to you, which
+  is the whole effect; whether that ever changes is a design decision, not an oversight.
+- Dialogue is data. A `DialogueSet` resource is one conversation (speaker plus lines) in
+  `res://resources/dialogue/`. An `Npc` exports an array of them and picks one at random in `_Ready`. Because a
+  `Site` respawns its building for every contract, the same address gets a different resident each job.
+- `DialoguePanel` is a `ModalPanel` found by group, one per world scene. Interact or the button advances a line;
+  the last line closes it. `Advance()` and `LineIndex` are public so tests can walk a conversation.
+- The house occupant is generated into `house.tscn` by `gen_scenes.py`; the watch officer is hand-placed in the
+  depot in `world.tscn`, which `gen_city.py` preserves.
+- The officer's first-day lines are currently the only briefing in the game. They carry the premise, the controls
+  and the lie all at once. That is a stopgap for a real scripted opening, not a replacement for one.
+
+## The neighbourhood
+
+`tools/gen_city.py` owns the whole world layout and splices itself into `scenes/world/world.tscn`. It is
+idempotent: it replaces the nodes between `Roads` and `Depot`, and between `Sites` and `Beacon`, on every run, and
+leaves everything else (environment, sun, ground, depot, truck, player, HUD) alone. `gen_scenes.py` calls it last,
+so one command regenerates everything.
+
+- **The plan is data.** `ROADS` is a list of (name, axis, coordinate, from, to, width, sign text); `SITES` places
+  the four job addresses; `PALETTE` says which house types repeat down each street. Change those lists, re-run,
+  re-import. Nothing else needs touching.
+- **Roads are a 4x4 grid** with the depot inside the centre block, plus a short Depot Road from its doorway south
+  to Main Avenue. Blocks must be at least `2 * SETBACK + house depth` apart or the two rows of houses collide;
+  at 46 m spacing a block side holds one or two lots.
+- **Lots are filled per block segment**, not by striding the whole road: free runs along each frontage are what is
+  left after subtracting the other roads, the depot and the four addresses, and each run is filled with as many
+  `LOT`-wide lots as fit, centred. Striding the whole road instead loses most candidates to intersections.
+- **Every lot gets the same yard**: driveway, front path, a low fence with a gap at the path, a tree. The four job
+  addresses get it too, so they do not stand out; the beacon and the house number are what find them.
+- **Kenney city buildings front +Z**, same as the house and the vehicles. Yaw maps local +Z to `(sin, cos)`.
+- Street names are `Label3D` at every junction, and each job address has its number on the house. The addresses on
+  the docket are real places you can navigate to.
+- Pavements are split at intersections so no two quads are coplanar; carriageways along X and along Z sit at
+  different heights for the same reason.
+- `tools/city_map.svg` is a top-down plan written on every run, for checking a layout without opening Godot.
+
+## Seeing the game without the editor
+
+`devtools/shot.sh <scene_or_glb> <out.png> [yaw] [elevation] [distance] [target_y] [target_x] [target_z]` renders
+one frame to a PNG. It needs a desktop session because Godot cannot render in `--headless`. Use it to check layout,
+model orientation and lighting. It is how the buildings were confirmed to face +Z and how the city was iterated.
 
 ## Art assets (Kenney, CC0)
 
@@ -42,6 +99,7 @@ systems/fire/      Fire simulation: FireSystem (autoload), Flammable (component)
                    FireVfx (presentation only; one per location)
 resources/         Data-only tuning as .tres files + their C# Resource classes
   burn_profiles/     paper / wood / fabric
+  dialogue/          one .tres per conversation
   flamethrower/      one .tres per flamethrower tier
 scenes/
   world/             world.tscn (startup), Site (a lot that spawns a building), ContractManager, Dispatch
@@ -52,7 +110,8 @@ scenes/
   vfx/               Ignition burst, burning flames, ProceduralAudio (placeholder sounds generated in code)
   locations/         Buildings. Root node has Location.cs. house.tscn is the enterable version of test_room
                      (doorway on +Z, roof, interior light); props are copied from test_room, keep them in sync.
-  ui/                HUD, pause menu (one folder per scene)
+  ui/                HUD, pause menu, dialogue (one folder per scene)
+  npc/               Npc + npc.tscn, a blocky primitive figure (the kits ship no character models)
 tests/             Headless test scenes. `tests/run_tests.sh` builds + runs them (exit code = result).
 ```
 
@@ -60,7 +119,7 @@ tests/             Headless test scenes. `tests/run_tests.sh` builds + runs them
 
 - C# files and classes: `PascalCase.cs`. Scenes, resources, folders: `snake_case`.
 - A scene's script lives next to it, same name (`player.tscn` / `Player.cs`).
-- Namespace `PleasureToBurn`; tests in `PleasureToBurn.Tests`.
+- Namespace `Alexandria`; tests in `Alexandria.Tests`.
 - Node names in a scene are PascalCase and are the API other code uses (`GetNode("Head/Camera3D/Flamethrower")`).
 - Signals: past tense / event style, `XxxEventHandler` delegates (`FuelChanged`, `ObjectCharred`).
 
@@ -134,6 +193,11 @@ day 1, all three lines maxed around day 6–8), deadline allowance (`AssumedSpee
 
 ## Truck
 
+- **The depot's only opening is +Z, and positive engine force drives toward the truck's own +Z.** A truck parked
+  rotated 180 inside it drives into the back wall on the player's first input; that was the case until slice 4.
+  `WorldTests` now holds the throttle from the spawn point and asserts the truck clears the doorway.
+- Input is read in `_PhysicsProcess` and handed to `Drive(throttle, steer, braking, dt)`, which is public so tests
+  can drive without synthesising input. Disable the node's `_PhysicsProcess` first or it will zero the throttle.
 - `VehicleBody3D` with four `VehicleWheel3D`; all wheels drive, fronts steer. Interact to enter, interact again
   to exit at `ExitPoint`. While driving the Player is `ProcessMode.Disabled`, hidden, collision off, and the
   `ChaseCamera` (TopLevel, follows yaw only) is current.
@@ -175,6 +239,18 @@ day 1, all three lines maxed around day 6–8), deadline allowance (`AssumedSpee
 
 ## Next slices (in brief priority order)
 
+0. **The demon.** One intelligence value on the career save that rises with every book burned, and a malice term
+   in `FireSystem`'s neighbour weight so the fire stops obeying physics by degrees: first leaning toward unburnt
+   contraband, then toward the player and the door they came in by. Needs player heat and a real failure state,
+   or the threat is theatre, and a world book counter on the HUD so the arc is visible.
+0a. **Make a house worth entering.** One room, one prop list, every job. Randomise which props spawn, where books
+   hide, and how many, so clearing a house is a search and not a sweep. Then a second and third floor plan. The
+   enterable house is also still a flat-roofed box among pitched-roof neighbours; it should look like the street.
+0c. **The first ten minutes.** No cold open, no briefing, no tutorial: the player spawns in a depot next to a job
+   board and is told nothing. A scripted first morning would fix framing, onboarding and stakes at once.
+0d. **The economy has no friction.** One cleared house pays about $1820 and the dearest upgrade costs $600, so
+   every upgrade is affordable after the first job and money stops meaning anything on day one. Either the rate
+   per item or the upgrade costs are wrong by an order of magnitude. Fix before tuning anything else.
 1. **Playtest the day loop.** Does a day feel like a day? Tune shift length, pay, upgrade costs, deadlines.
 1b. Shelf-as-expected-loss rule so precision jobs are fair (shelf bodies should not count as collateral).
 2. Extinguish phase: a hose/extinguisher that removes heat (negative AddHeat path) and puts fires out. Same sim, run backwards.

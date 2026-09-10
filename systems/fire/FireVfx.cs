@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// Hangs placeholder effects off FireSystem signals: an ignition burst when something catches,

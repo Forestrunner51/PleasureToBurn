@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Pleasure to Burn"
+config/name="Alexandria"
 config/description="Job simulator prototype: a fireman in a world where books are banned. Fire system + flamethrower slice."
 run/main_scene="res://scenes/world/world.tscn"
 config/features=PackedStringArray("4.8", "C#", "Forward Plus")
@@ -28,7 +28,7 @@ window/stretch/mode="canvas_items"
 
 [dotnet]
 
-project/assembly_name="PleasureToBurn"
+project/assembly_name="Alexandria"
 
 [input]
 

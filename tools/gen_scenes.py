@@ -104,6 +104,13 @@ def house_interior(prefix_parent):
     props_used = ["bookshelf", "bookshelf_small", "rug", "table", "chair", "sofa", "side_table", "lamp", "plant",
                   "coat_rack", "desk", "radio", "tv", "crate", "crate_open", "book", "fuel_can"]
     ext += [f'[ext_resource type="PackedScene" path="res://scenes/props/{p}.tscn" id="p_{p}"]' for p in props_used]
+    # The resident. Not flammable, does not move, does not stop you.
+    ext += [
+        '[ext_resource type="PackedScene" path="res://scenes/npc/npc.tscn" id="p_npc"]',
+        '[ext_resource type="Script" path="res://resources/dialogue/DialogueSet.cs" id="dlg_script"]',
+    ]
+    occupants = ["occupant_teacher", "occupant_denial", "occupant_quiet", "occupant_watcher"]
+    ext += [f'[ext_resource type="Resource" path="res://resources/dialogue/{d}.tres" id="d_{d}"]' for d in occupants]
     sub = [
         '[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_roof"]\nalbedo_color = Color(0.3, 0.2, 0.18, 1)\nroughness = 0.9',
         '[sub_resource type="BoxMesh" id="BoxMesh_roof"]\nmaterial = SubResource("StandardMaterial3D_roof")\nsize = Vector3(10.6, 0.3, 10.6)',
@@ -188,6 +195,17 @@ shape = SubResource("BoxShape3D_wall")
     ]
     for name, p, x, dy, z, rot in layout:
         n += f'\n[node name="{name}" parent="Props" instance=ExtResource("p_{p}")]\ntransform = {T(x, FLOOR_TOP+dy, z, rot)}\n'
+
+    # One resident, facing the door, holding one of several conversations picked when the house spawns.
+    conversations = ", ".join(f'ExtResource("d_{d}")' for d in occupants)
+    n += f'''
+[node name="People" type="Node3D" parent="."]
+
+[node name="Occupant" parent="People" instance=ExtResource("p_npc")]
+transform = {T(-2.6, FLOOR_TOP, 1.2, 0)}
+DisplayName = "Resident"
+Conversations = Array[ExtResource("dlg_script")]([{conversations}])
+'''
     return ext, sub, n
 
 ext, sub, nodes = house_interior(".")
@@ -305,110 +323,10 @@ margin = 0.3
 fov = 70.0
 ''')
 
-# ---------------- world: swap grey blocks for city-kit houses, add trees and parked cars ----------------
-w = open(f"{P}/scenes/world/world.tscn").read()
-blocks = [(-40,-45,'a',0),(-20,-48,'b',0),(30,-46,'c',0),(75,-40,'d',0),(-70,-10,'e',90),(-70,40,'f',90),(80,45,'g',-90),(30,60,'h',180),(-30,60,'i',180),(85,5,'j',-90),
-          (-20,-70,'k',0),(10,-72,'l',0),(50,-70,'m',0),(-85,-45,'n',90),(-85,65,'o',90),(60,80,'p',180),(-5,80,'q',180),(90,-70,'r',0),(-60,82,'s',180),(95,70,'t',-90)]
-ext_add, sub_add, nodes = [], [], '\n[node name="Blocks" type="Node3D" parent="."]\n'
-kinds = sorted(set(b[2] for b in blocks))
-for k in kinds:
-    ext_add.append(f'[ext_resource type="PackedScene" path="res://assets/models/city/building-type-{k}.glb" id="city_{k}"]')
-    size, _ = model_info(f"city/building-type-{k}.glb", C)
-    sub_add.append(f'[sub_resource type="BoxShape3D" id="BoxShape3D_city_{k}"]\nsize = Vector3({size[0]:.2f}, {size[1]:.2f}, {size[2]:.2f})')
-for i, (x, z, k, rot) in enumerate(blocks):
-    size, _ = model_info(f"city/building-type-{k}.glb", C)
-    nodes += f'''
-[node name="Block{i}" type="StaticBody3D" parent="Blocks"]
-transform = {T(x, 0, z, rot)}
-collision_layer = 2
-collision_mask = 0
+# ---------------- world ----------------
+# The neighbourhood (roads, pavements, lots, dressing, signs) lives in gen_city.py, which splices itself
+# into scenes/world/world.tscn. Keep it as the single owner of the world layout.
+import gen_city
+gen_city.build()
 
-[node name="Model" parent="Blocks/Block{i}" instance=ExtResource("city_{k}")]
-transform = {T(0, 0, 0, 0, C)}
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Blocks/Block{i}"]
-transform = {T(0, size[1]/2, 0)}
-shape = SubResource("BoxShape3D_city_{k}")
-'''
-# trees
-ext_add += ['[ext_resource type="PackedScene" path="res://assets/models/city/tree-large.glb" id="city_tree_large"]',
-            '[ext_resource type="PackedScene" path="res://assets/models/city/tree-small.glb" id="city_tree_small"]']
-sub_add.append('[sub_resource type="BoxShape3D" id="BoxShape3D_trunk"]\nsize = Vector3(0.6, 4, 0.6)')
-trees = [(-52,-38,'large'),(-38,-52,'small'),(48,-38,'large'),(62,-52,'small'),(-52,50,'small'),(-38,38,'large'),(67,44,'large'),(53,58,'small'),
-         (-15,-20,'large'),(15,-20,'small'),(-15,35,'small'),(15,35,'large'),(-60,10,'large'),(70,-10,'small'),(20,-58,'small'),(-25,10,'small')]
-nodes += '\n[node name="Trees" type="Node3D" parent="."]\n'
-for i, (x, z, k) in enumerate(trees):
-    nodes += f'''
-[node name="Tree{i}" type="StaticBody3D" parent="Trees"]
-transform = {T(x, 0, z, (i*37) % 360)}
-collision_layer = 2
-collision_mask = 0
-
-[node name="Model" parent="Trees/Tree{i}" instance=ExtResource("city_tree_{k}")]
-transform = {T(0, 0, 0, 0, C)}
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/Tree{i}"]
-transform = {T(0, 2, 0)}
-shape = SubResource("BoxShape3D_trunk")
-'''
-# parked cars along the avenue (decoration, world layer). Kenney cars face +Z: rotate 180 to face -Z like the truck.
-cars = [("sedan",-30,-24,180),("van",25,-24,0),("taxi",-8,26,90),("suv",60,14,180),("police",12,-36,0)]
-for name, *_ in cars:
-    ext_add.append(f'[ext_resource type="PackedScene" path="res://assets/models/cars/{name}.glb" id="car_{name}"]')
-ext_add.append('[ext_resource type="PackedScene" path="res://assets/models/cars/wheel-default.glb" id="car_wheel"]')
-wd, _ = model_info("cars/wheel-default.glb", V)
-nodes += '\n[node name="ParkedCars" type="Node3D" parent="."]\n'
-for i, (name, x, z, rot) in enumerate(cars):
-    size, _ = model_info(f"cars/{name}.glb", V)
-    sub_add.append(f'[sub_resource type="BoxShape3D" id="BoxShape3D_car_{name}"]\nsize = Vector3({size[0]:.2f}, {size[1]*0.8:.2f}, {size[2]:.2f})')
-    nodes += f'''
-[node name="Car{i}" type="StaticBody3D" parent="ParkedCars"]
-transform = {T(x, wd[1]/2, z, rot)}
-collision_layer = 2
-collision_mask = 0
-
-[node name="Model" parent="ParkedCars/Car{i}" instance=ExtResource("car_{name}")]
-transform = {T(0, 0, 0, 180, V)}
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ParkedCars/Car{i}"]
-transform = {T(0, size[1]*0.4, 0)}
-shape = SubResource("BoxShape3D_car_{name}")
-'''
-    for wx, wz in ((-0.62*V, 0.7*V), (0.62*V, 0.7*V), (-0.62*V, -0.7*V), (0.62*V, -0.7*V)):
-        nodes += f'\n[node name="Wheel{"".join(str(int(v>0)) for v in (wx,wz))}" parent="ParkedCars/Car{i}" instance=ExtResource("car_wheel")]\ntransform = {T(wx, 0, wz, 0, V)}\n'
-
-# splice: drop old Blocks section (up to the Depot node), insert new nodes there
-start = w.index('[node name="Blocks" type="Node3D" parent="."]')
-end = w.index('[node name="Depot" type="Node3D" parent="."]')
-w = w[:start] + nodes.lstrip("\n") + "\n" + w[end:]
-# remove old block sub_resources and anything this script generated on a previous run (keeps it idempotent)
-import re
-w = re.sub(r'\n\[sub_resource type="(BoxMesh|BoxShape3D)" id="(BoxMesh|BoxShape3D)_block_\d+"\]\n(?:[^\n\[]+\n)+', '\n', w)
-w = re.sub(r'\[ext_resource type="PackedScene" path="res://assets/models/(city|cars)/[^"]+" id="(city_|car_)[^"]+"\]\n', '', w)
-w = re.sub(r'\[sub_resource type="BoxShape3D" id="BoxShape3D_(city_\w+|trunk|car_\w+)"\]\nsize = [^\n]+\n\n?', '', w)
-# insert new ext/sub resources
-first_sub = w.index('[sub_resource')
-w = w[:first_sub] + "\n".join(ext_add) + "\n\n" + "\n\n".join(sub_add) + "\n\n" + w[first_sub:]
-w = re.sub(r'\n{3,}', '\n\n', w)
-n_sub = w.count('[sub_resource'); n_ext = w.count('[ext_resource')
-w = re.sub(r'\[gd_scene load_steps=\d+ format=3\]', f'[gd_scene load_steps={n_sub+n_ext+1} format=3]', w)
-# give each site a couple of trees for dressing
-site_trees = ''
-for name, x, z in (("LarkspurLane",-45,-45),("TallowCourt",55,-45),("AshgroveRoad",-45,44),("MillerTerrace",60,50)):
-    for j, (dx, dz) in enumerate(((-7.5, 6), (7.5, -6))):
-        site_trees += f'''
-[node name="SiteTree_{name}_{j}" type="StaticBody3D" parent="Trees"]
-transform = {T(x+dx, 0, z+dz, (j*90+len(name)*13) % 360)}
-collision_layer = 2
-collision_mask = 0
-
-[node name="Model" parent="Trees/SiteTree_{name}_{j}" instance=ExtResource("city_tree_{'large' if j==0 else 'small'}")]
-transform = {T(0, 0, 0, 0, C)}
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Trees/SiteTree_{name}_{j}"]
-transform = {T(0, 2, 0)}
-shape = SubResource("BoxShape3D_trunk")
-'''
-w = w.replace('\n[node name="ParkedCars" type="Node3D" parent="."]', site_trees + '\n[node name="ParkedCars" type="Node3D" parent="."]')
-open(f"{P}/scenes/world/world.tscn", "w").write(w)
 print("generated. truck size", [round(v,2) for v in tsize], "wheel r", round(wheel_r,2), "book", [round(v,2) for v in book_size])

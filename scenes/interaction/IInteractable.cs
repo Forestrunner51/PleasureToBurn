@@ -1,4 +1,4 @@
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// Implement on a body (StaticBody3D/RigidBody3D) that the player can use with the interact action.

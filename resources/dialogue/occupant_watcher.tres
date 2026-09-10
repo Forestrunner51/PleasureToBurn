@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="DialogueSet" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/dialogue/DialogueSet.cs" id="1_dlg"]
+
+[resource]
+script = ExtResource("1_dlg")
+Speaker = "Old Man"
+Lines = PackedStringArray("It knows this street now.", "Number eleven went up last month. Took the hedge, then the car, then it stopped at my gate.", "Stopped. Like it was thinking about it.", "You keep feeding it and one day it will not be fire at all.")

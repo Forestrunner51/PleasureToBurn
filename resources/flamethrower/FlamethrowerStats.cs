@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// Tunable numbers for one flamethrower tier. Upgrades are just different .tres files

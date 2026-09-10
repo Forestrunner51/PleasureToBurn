@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>The reward beat: an itemised receipt for the job just settled, with a star rating.</summary>
 public partial class InvoicePanel : ModalPanel

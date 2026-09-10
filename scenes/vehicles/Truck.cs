@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// Arcade fire truck on Godot's built-in VehicleBody3D. Not a driving sim: it needs to feel fine
@@ -96,12 +96,21 @@ public partial class Truck : VehicleBody3D, IInteractable
             return;
         }
 
-        var dt = (float)delta;
-        var throttle = Input.GetAxis("move_down", "move_up");
-        var steer = Input.GetAxis("move_right", "move_left");
+        Drive(Input.GetAxis("move_down", "move_up"),
+              Input.GetAxis("move_right", "move_left"),
+              Input.IsActionPressed("brake"),
+              (float)delta);
+    }
+
+    /// <summary>
+    /// One tick of driving. Positive throttle drives toward the truck's own +Z, which is the way the
+    /// model faces. Public so tests can drive without synthesising input.
+    /// </summary>
+    public void Drive(float throttle, float steer, bool braking, float dt)
+    {
         Steering = Mathf.Lerp(Steering, steer * Mathf.DegToRad(MaxSteerDegrees), SteerSpeed * dt);
         EngineForce = throttle * EnginePower;
-        Brake = Input.IsActionPressed("brake") ? BrakeForce : 0f;
+        Brake = braking ? BrakeForce : 0f;
     }
 
     public override void _UnhandledInput(InputEvent @event)

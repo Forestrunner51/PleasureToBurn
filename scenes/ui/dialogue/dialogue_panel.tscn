@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/dialogue/DialoguePanel.cs" id="1_script"]
+
+[node name="DialoguePanel" type="CanvasLayer"]
+process_mode = 3
+layer = 22
+visible = false
+script = ExtResource("1_script")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.55)
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -420.0
+offset_top = -230.0
+offset_right = 420.0
+offset_bottom = -60.0
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Speaker" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.78, 0.45, 1)
+theme_override_font_sizes/font_size = 20
+text = ""
+
+[node name="Line" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 18
+text = ""
+
+[node name="NextButton" type="Button" parent="Panel/VBox"]
+layout_mode = 2
+text = "Continue"

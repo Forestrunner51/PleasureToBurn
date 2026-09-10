@@ -1,6 +1,6 @@
 using Godot;
 
-namespace PleasureToBurn;
+namespace Alexandria;
 
 /// <summary>
 /// First-person flamethrower. While the fire action is held it samples a cone of rays from the
