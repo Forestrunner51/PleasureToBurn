@@ -27,7 +27,7 @@ The four job addresses are ordinary lots on the streets they are named after, wi
 People are interactable: the watch officer at the depot briefs you, and every house has a resident who does not
 leave and does not stop you. Conversations are `DialogueSet` resources, picked at random when a house spawns.
 
-Controls: mouse to look, **WASD** to move, **hold left mouse** to flame, **E** to use things (dispatch console,
+Controls: mouse to look, **WASD** to move, **Shift** to run, **hold left mouse** to flame, **E** to use things (dispatch console,
 fuel cans, the truck), **Esc** to pause. In the truck: **W/S** drive, **A/D** steer, **Space** brake, **E** get out.
 The reticle ring fills as the object you aim at heats toward ignition.
 

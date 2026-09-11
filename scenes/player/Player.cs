@@ -16,6 +16,9 @@ namespace Alexandria;
 public partial class Player : CharacterBody3D
 {
     [Export] public float MaxSpeed { get; set; } = 5f;
+
+    /// <summary>Speed multiplier while the run action is held. Running and firing are mutually exclusive.</summary>
+    [Export(PropertyHint.Range, "1,3,0.05")] public float RunMultiplier { get; set; } = 1.75f;
     [Export] public float Acceleration { get; set; } = 40f;
     [Export] public float Friction { get; set; } = 50f;
     [Export] public float MouseSensitivity { get; set; } = 0.0022f;
@@ -30,6 +33,9 @@ public partial class Player : CharacterBody3D
 
     public Camera3D Camera { get; private set; } = null!;
     public Flamethrower Flamethrower { get; private set; } = null!;
+
+    /// <summary>True while actually running, i.e. the key is held and the flamethrower is not firing.</summary>
+    public bool IsRunning { get; private set; }
 
     public override void _Ready()
     {
@@ -64,11 +70,12 @@ public partial class Player : CharacterBody3D
         var dt = (float)delta;
         var input = Input.GetVector("move_left", "move_right", "move_up", "move_down");
         var wish = (Transform.Basis * new Vector3(input.X, 0, input.Y)).Normalized();
+        IsRunning = WantsToRun(Input.IsActionPressed("run"));
 
         var velocity = Velocity;
         var horizontal = new Vector3(velocity.X, 0, velocity.Z);
         horizontal = input != Vector2.Zero
-            ? horizontal.MoveToward(wish * MaxSpeed, Acceleration * dt)
+            ? horizontal.MoveToward(wish * SpeedFor(IsRunning), Acceleration * dt)
             : horizontal.MoveToward(Vector3.Zero, Friction * dt);
 
         velocity.X = horizontal.X;
@@ -77,6 +84,15 @@ public partial class Player : CharacterBody3D
         Velocity = velocity;
         MoveAndSlide();
     }
+
+    /// <summary>
+    /// You cannot run and burn at the same time: the trigger has to come off before you can move properly.
+    /// Without that a free sprint is strictly better than walking and the button may as well be a bigger MaxSpeed.
+    /// Split out from _PhysicsProcess so tests can check it without synthesising input.
+    /// </summary>
+    public bool WantsToRun(bool runHeld) => runHeld && !Flamethrower.IsFiring;
+
+    public float SpeedFor(bool running) => running ? MaxSpeed * RunMultiplier : MaxSpeed;
 
     public override void _UnhandledInput(InputEvent @event)
     {

@@ -155,6 +155,16 @@ props have proper collision sizes.
   multi-colour models keep their palette while charring. Meshes under a nested Flammable body are skipped.
 - Call `FireSystem.Instance.Reset()` before loading a new location.
 
+## Moving
+
+- **Shift runs**, at `Player.RunMultiplier` times `MaxSpeed`. Running and firing are mutually exclusive: the
+  trigger has to come off before you move properly. A free sprint is strictly better than walking, so without a
+  cost the button may as well have been a larger `MaxSpeed`.
+- The decision lives in `Player.WantsToRun(bool)` and `Player.SpeedFor(bool)`, split out of `_PhysicsProcess` so
+  tests can check them without synthesising input. `Flamethrower.SetFiring` is public for the same reason.
+- No stamina yet. When the fire starts hunting the player, a stamina bar is the obvious next knob, and running
+  out of it in a burning room is the beat that slice wants.
+
 ## Aim, interaction, fuel
 
 - The flamethrower casts its centre ray every physics tick, firing or not. `AimCollider`, `AimFlammable`, `AimDistance`

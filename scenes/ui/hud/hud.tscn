@@ -155,5 +155,5 @@ offset_right = -16.0
 offset_bottom = -12.0
 theme_override_colors/font_color = Color(0.7, 0.65, 0.6, 1)
 theme_override_font_sizes/font_size = 14
-text = "LMB flame  ·  E use / drive  ·  Esc pause"
+text = "LMB flame  ·  Shift run  ·  E use / drive  ·  Esc pause"
 horizontal_alignment = 2

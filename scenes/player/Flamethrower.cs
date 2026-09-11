@@ -147,7 +147,8 @@ public partial class Flamethrower : Node3D
         EventBus.Instance.EmitSignal(EventBus.SignalName.AimChanged, heatFraction, state, prompt);
     }
 
-    private void SetFiring(bool firing)
+    /// <summary>Toggle the jet. Public so tests and cutscenes can drive it without synthesising input.</summary>
+    public void SetFiring(bool firing)
     {
         if (firing == IsFiring)
             return;

@@ -153,6 +153,15 @@ public partial class WorldTests : Node3D
         Check(occupant!.Current is { IsEmpty: false }, "the resident has something to say");
         Check(occupant.GetNodeOrNull<Flammable>("Flammable") is null, "the resident is not part of the fire simulation");
 
+        // Running. Faster than walking, but not while the trigger is down.
+        Check(InputMap.HasAction("run"), "the run action is in the input map");
+        Check(player.SpeedFor(true) > player.SpeedFor(false), "running is faster than walking");
+        Check(player.WantsToRun(true), "the run key runs while the flamethrower is idle");
+        player.Flamethrower.SetFiring(true);
+        Check(!player.WantsToRun(true), "you cannot run while the flamethrower is firing");
+        player.Flamethrower.SetFiring(false);
+        Check(player.WantsToRun(true), "letting go of the trigger lets you run again");
+
         career.Reset();
         DirAccess.RemoveAbsolute(ProjectSettings.GlobalizePath("user://test_career.cfg"));
 

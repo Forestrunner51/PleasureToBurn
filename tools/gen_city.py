@@ -445,7 +445,9 @@ def splice(b, sites_text):
         if line.startswith('[ext_resource'):
             current = None
             if not doomed_ext.search(line):
-                ext_lines.append(line)
+                # Godot stamps uids in on save, but gen_scenes.py rewrites the scenes they point at, so a
+                # stale uid warns on every load. Paths always resolve; let Godot re-add uids if it wants.
+                ext_lines.append(re.sub(r' uid="uid://[^"]+"', '', line))
         elif line.startswith('[sub_resource'):
             current = [line]
             sub_blocks.append(current)
